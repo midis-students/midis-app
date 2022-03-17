@@ -1,0 +1,12 @@
+{
+  "name": "Midis App V4",
+  "short_name": "Мидис Студент V4",
+  "start_url": "/",
+  "display": "fullscreen",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "16x16"
+    }
+  ]
+}

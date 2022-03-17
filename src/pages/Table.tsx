@@ -13,6 +13,7 @@ import {
   Tabs,
   TabsItem,
   Title,
+  Text,
 } from '@vkontakte/vkui';
 import React from 'react';
 import { useRecoilValue } from 'recoil';
@@ -86,7 +87,7 @@ function Layout({ tab, group }: { tab: string; group: IGroup }) {
     <>
       {group.weeks.map((week) => (
         <React.Fragment key={week.name}>
-          <Title level="2" style={{ marginLeft: '1rem' }}>
+          <Title level="3" style={{ marginLeft: '1rem' }}>
             {week.name}
           </Title>
           {week.days.map((day) => (
@@ -134,10 +135,10 @@ function Day({ day }: { day: APIDay }) {
                     {par.id}
                   </Counter>
                 </div>
-                <div>
+                <Text weight="medium">
                   {par.object}
                   {par.flow != 'Все' ? ` (Поток: ${par.flow})` : ''}
-                </div>
+                </Text>
               </div>
             }
             caption={par.teacher}

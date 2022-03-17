@@ -8,6 +8,7 @@ import {
   Panel,
   PanelHeader,
   SimpleCell,
+  Text,
 } from '@vkontakte/vkui';
 import React from 'react';
 import { useRecoilValue } from 'recoil';
@@ -79,7 +80,7 @@ function Mark({ mark }: { mark: APIMark }) {
       subtitle={mark.object}
       header={
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <div>{mark.date}</div>
+          <Text weight="medium">{mark.date}</Text>
           <Counter style={{ backgroundColor: color[Number(mark.mark) - 1] }}>{mark.mark}</Counter>
         </div>
       }

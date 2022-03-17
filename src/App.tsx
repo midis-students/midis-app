@@ -51,6 +51,14 @@ export function App() {
 
   React.useEffect(() => {
     async function Load() {
+      bridge.subscribe(({ detail: { type, data } }) => {
+        if (type === 'VKWebAppUpdateConfig') {
+          const schemeAttribute = document.createAttribute('scheme');
+          ///@ts-ignore
+          schemeAttribute.value = data.scheme ? data.scheme : 'client_light';
+          document.body.attributes.setNamedItem(schemeAttribute);
+        }
+      });
       bridge.send('VKWebAppInit').then(() => {
         window.isDevHost = true;
       });

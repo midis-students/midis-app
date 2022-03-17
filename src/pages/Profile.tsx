@@ -70,7 +70,7 @@ export default function ProfilePage(props: PageProp) {
           header="GitHub Мидис Студента"
           subheader="Для особо умных ♥"
           actions={
-            <Button stretched href="https://vk.com/studentmidis">
+            <Button stretched href="https://github.com/DamirLut/midis-app">
               Перейти
             </Button>
           }

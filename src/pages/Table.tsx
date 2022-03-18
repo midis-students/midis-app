@@ -18,7 +18,7 @@ import {
 import React from 'react';
 import { useRecoilValue } from 'recoil';
 import { AppScheduleState } from '../atoms/App';
-import { APIDay } from '../lib/midis-api.types';
+import { APIDay, APIPar } from '../lib/midis-api.types';
 import { IGroup } from '../lib/parser';
 import { PageProp } from './types';
 
@@ -102,6 +102,32 @@ function Layout({ tab, group }: { tab: string; group: IGroup }) {
 function Day({ day }: { day: APIDay }) {
   if (Object.keys(day).length === 0) return null;
 
+  const parType = (par: APIPar) => {
+    const colors = {
+      active: '#4bb34b',
+      default: '#aeb7c2',
+      danger: '#ff3347',
+      zoom: '#2688eb',
+    };
+    const now = new Date();
+    const start = new Date();
+    start.setHours(+par.time.start.split(':')[0]);
+    start.setMinutes(+par.time.start.split(':')[1]);
+    const end = new Date();
+    end.setHours(+par.time.end.split(':')[0]);
+    end.setMinutes(+par.time.end.split(':')[1]);
+    if (day.name.includes('Сегодня')) {
+      if (now.getTime() > start.getTime() && now.getTime() < end.getTime()) {
+        return colors.active;
+      }
+    }
+    return par?.danger
+      ? colors.danger
+      : Number(par.class) + '' == 'NaN'
+      ? colors.zoom
+      : colors.default;
+  };
+
   return (
     <>
       <Div>
@@ -123,15 +149,7 @@ function Day({ day }: { day: APIDay }) {
             header={
               <div style={{ display: 'inline-flex', alignItems: 'center' }}>
                 <div style={{ marginRight: '.25em' }}>
-                  <Counter
-                    size="s"
-                    mode={
-                      par?.danger
-                        ? 'prominent'
-                        : Number(par.class) + '' == 'NaN'
-                        ? 'primary'
-                        : 'secondary'
-                    }>
+                  <Counter size="s" style={{ backgroundColor: parType(par) }}>
                     {par.id}
                   </Counter>
                 </div>

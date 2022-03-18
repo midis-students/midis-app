@@ -42,8 +42,11 @@ export const AppScheduleState = connectedSelector({
       schedule.groups.forEach((group_name) => {
         const group = schedule.group(group_name);
         const settime = (day: APIDay) => {
-          day.pars.forEach((par, index: number) => {
-            par.time = schedule_time[day.name.includes('Суббота') ? 'saturday' : 'weekdays'][index];
+          day.pars.forEach((par) => {
+            par.time =
+              schedule_time[day.name.includes('Суббота') ? 'saturday' : 'weekdays'][
+                par.time as unknown as number
+              ];
           });
         };
         if (group.next_day) settime(group.next_day);

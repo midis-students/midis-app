@@ -39,13 +39,13 @@ export default function AuthPage(props: PageProp) {
   const Auth = () => {
     UserAuth(login, password).then((data) => {
       if (data?.error) {
-        if (data.error.message == 'BAD AUTH HEADER') {
+        
           updateConnectedValue(AppErrorState, null);
           setError({
             message: 'Ошибка входа',
             longmessage: 'Не правильно введен логин или пароль',
           });
-        }
+        
       }
     });
   };

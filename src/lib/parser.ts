@@ -31,6 +31,8 @@ export function optomizer(data: Record<any, any>): APIUserSchedule {
   }
 
   out = looper(data.d);
+
+  console.log(out);
   return out;
 }
 interface IWeek {
@@ -57,21 +59,23 @@ export function scheduleTransform(sched: Record<any, any>) {
       };
 
       for (let i = 0; i < sched[group_name]._.length; i++) {
-        var dayid =
-          sched[group_name]._[i]._.indexOf('Сегодня') != -1
-            ? 'now_day'
-            : sched[group_name]._[i]._.indexOf('Завтра') != -1
-            ? 'next_day'
-            : null;
-        if (dayid) {
-          if (sched[group_name]._[i])
-            ///@ts-ignore
-            out[dayid] = {
-              name: sched[group_name]._[i]._,
-              pars: sched[group_name]._[i].$,
-            };
-        } else {
-          console.log('DAYID error', dayid);
+        if (sched[group_name]._[i]) {
+          var dayid =
+            sched[group_name]._[i]._.indexOf('Сегодня') != -1
+              ? 'now_day'
+              : sched[group_name]._[i]._.indexOf('Завтра') != -1
+              ? 'next_day'
+              : null;
+          if (dayid) {
+            if (sched[group_name]._[i])
+              ///@ts-ignore
+              out[dayid] = {
+                name: sched[group_name]._[i]._,
+                pars: sched[group_name]._[i].$,
+              };
+          } else {
+            console.log('DAYID error', dayid);
+          }
         }
       }
 

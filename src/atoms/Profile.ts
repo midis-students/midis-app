@@ -26,10 +26,10 @@ export const PreAuthState = connectedSelector<APIUserProfile | APIUsersList[]>({
 export const ProfileState = connectedSelector({
   key: 'ProfileState',
   get: async ({ get }) => {
-    const token = localStorage.getItem('token');
+    const token = get(authState);
     if (token) {
       router.pushPage(PAGE_TABLE);
-      return await getProfile();
+      return; // await getProfile();
     }
     router.pushPage(PAGE_AUTH);
   },

@@ -43,7 +43,9 @@ export function App() {
           }}>
           <h2>{ApiError.message || 'Ой...'}</h2>
           <p>{ApiError.longmessage || 'Сервер не отвечает'}</p>
-          {ApiError.message === undefined ? <img src="/im-down.webp" width="320em" /> : null}
+          {ApiError.message === undefined ? (
+            <img src="https://web.damirlut.online/im-down.webp" width="320em" />
+          ) : null}
         </Alert>,
       );
     }

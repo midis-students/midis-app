@@ -33,7 +33,7 @@ function serialize(obj: Record<string, any>) {
   return '?' + str.join('&');
 }
 
-const endpoint = 'https://dev.iky.su';
+const endpoint = 'https://api.iky.su/v13';
 
 export async function request<T>(
   method: string,

@@ -10,7 +10,7 @@ import MarksPage from './pages/Marks';
 import ProfilePage from './pages/Profile';
 import AuthPage from './pages/Auth';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { ProfileState } from './atoms/Profile';
+import { authState, ProfileState } from './atoms/Profile';
 import bridge from '@vkontakte/vk-bridge';
 import { AppErrorState, AppMarksState, AppScheduleState } from './atoms/App';
 
@@ -27,6 +27,7 @@ export function App() {
   const [errorPoput, setErrorPoput] = React.useState<JSX.Element>();
   const [ApiError] = useRecoilState(AppErrorState);
 
+  useRecoilValue(authState);
   useRecoilValue(ProfileState);
   useRecoilValue(AppScheduleState);
   useRecoilValue(AppMarksState);

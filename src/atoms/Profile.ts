@@ -29,7 +29,7 @@ export const ProfileState = connectedSelector({
     const token = get(authState);
     if (token) {
       router.pushPage(PAGE_TABLE);
-      return; // await getProfile();
+      return await getProfile();
     }
     router.pushPage(PAGE_AUTH);
   },

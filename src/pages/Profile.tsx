@@ -13,10 +13,12 @@ import React from 'react';
 import { useRecoilValue } from 'recoil';
 import { updateConnectedValue } from '../atoms/ConnectedStore';
 import { authState, ProfileState } from '../atoms/Profile';
+import { PAGE_AUTH, router } from '../router';
 import { PageProp } from './types';
 
 export default function ProfilePage(props: PageProp) {
   const profile = useRecoilValue(ProfileState);
+  console.log(profile);
   return (
     <Panel id={props.id}>
       <PanelHeader>Профиль</PanelHeader>
@@ -34,6 +36,7 @@ export default function ProfilePage(props: PageProp) {
                 onClick={() => {
                   localStorage.removeItem('token');
                   updateConnectedValue(authState, '');
+                  router.pushPage(PAGE_AUTH);
                 }}>
                 Выйти
               </Button>

@@ -12,7 +12,7 @@ import {
 import React from 'react';
 import { useRecoilValue } from 'recoil';
 import { updateConnectedValue } from '../atoms/ConnectedStore';
-import { authState, ProfileState } from '../atoms/Profile';
+import { authState, ProfileState, __preAuthState } from '../atoms/Profile';
 import { PAGE_AUTH, router } from '../router';
 import { PageProp } from './types';
 
@@ -36,6 +36,7 @@ export default function ProfilePage(props: PageProp) {
                 onClick={() => {
                   localStorage.removeItem('token');
                   updateConnectedValue(authState, '');
+                  updateConnectedValue(__preAuthState, undefined);
                   router.pushPage(PAGE_AUTH);
                 }}>
                 Выйти

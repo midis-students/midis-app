@@ -104,7 +104,7 @@ export class Schedule {
     };
   }
   private getDaySchedule(day: MidisDay, id: number) {
-    return schedule_time[day.dayName.includes('Суббота') ? 'saturday' : 'weekdays'][id];
+    return schedule_time[day.dayName.includes('Суббота') ? 'saturday' : 'weekdays'][id - 1];
   }
 }
 

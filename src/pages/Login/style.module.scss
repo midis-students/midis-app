@@ -1,0 +1,39 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 60%;
+
+  div {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    .logotype {
+      width: 100%;
+      display: flex;
+      margin-top: 3em;
+      margin-bottom: 5em;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .form {
+      width: calc(100% - 2em);
+      display: flex;
+      flex-direction: column;
+      gap: 1em;
+      padding: 1em;
+    }
+
+    .error {
+      width: calc(100% - 2em);
+      padding: 0 1em;
+      div {
+        padding: 5px;
+        background-color: var(--danger);
+        border: 1px solid #fff;
+      }
+    }
+  }
+}

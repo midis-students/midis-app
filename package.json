@@ -1,36 +1,30 @@
 {
   "name": "midis-app",
-  "version": "1.0.0",
-  "description": "VK Mini App wrapp of portal.midis.info",
-  "main": "index.tsx",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
   "scripts": {
-    "start": "vite --host=0.0.0.0 --https=false",
-    "build": "GENERATE_SOURCEMAP=false vite build"
-  },
-  "keywords": [
-    "vk-mini-app"
-  ],
-  "author": "DamirLut & iky.su",
-  "license": "ISC",
-  "devDependencies": {
-    "@types/node": "^17.0.9",
-    "@types/react": "^17.0.38",
-    "@types/react-dom": "^17.0.11",
-    "@vitejs/plugin-react-refresh": "^1.3.6",
-    "typescript": "^4.5.4",
-    "vite": "^2.7.12"
+    "dev": "vite --host",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
   },
   "dependencies": {
-    "@happysanta/router": "^0.3.1",
-    "@vkontakte/icons": "^1.141.0",
-    "@vkontakte/vk-bridge": "^2.5.3",
-    "@vkontakte/vkui": "^4.24.0",
-    "axios": "^0.25.0",
-    "eruda": "^2.4.1",
-    "eruda-code": "^2.0.0",
-    "eruda-dom": "^2.0.0",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "recoil": "^0.6.1"
+    "axios": "^0.27.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.3.0",
+    "react-swipeable-views": "^0.14.0",
+    "recoil": "^0.7.5",
+    "recoil-nexus": "^0.4.0",
+    "sass": "^1.54.8"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.17",
+    "@types/react-dom": "^18.0.6",
+    "@types/react-swipeable-views": "^0.13.1",
+    "@vitejs/plugin-react": "^2.0.1",
+    "typescript": "^4.6.4",
+    "vite": "^3.0.7",
+    "vite-plugin-pwa": "^0.12.4"
   }
 }

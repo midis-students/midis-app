@@ -1,0 +1,13 @@
+@import '../../colors';
+
+.button {
+  background: var(--color);
+  height: 3em;
+  border: none;
+
+  border-radius: 0.5em;
+
+  &:hover {
+    border: 1px solid white;
+  }
+}

@@ -1,8 +1,33 @@
-import { defineConfig } from 'vite';
+import { defineConfig, PluginOption } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
+import path from 'path';
+import axios from 'axios';
 
-// https://vitejs.dev/config/
+const versioning = (): PluginOption => {
+  return {
+    name: 'VersioningPlugin',
+    enforce: 'post',
+    async generateBundle(options, bundle) {
+      const indexHtml = bundle['index.html'];
+      if (indexHtml.type === 'asset') {
+        let owner = 'DamirLut';
+        let repo = 'midis-app';
+
+        const { data } = await axios.get(
+          `http://ip2.damirlut.online:9000/github/commits/${owner}/${repo}/`,
+        );
+        const version = `Build #${data} ${new Date().toLocaleDateString()}`;
+        console.log(version);
+
+        indexHtml.source = indexHtml.source
+          .toString()
+          .replace(/version="(.*?)"/gm, `version="${version}"`);
+      }
+    },
+  };
+};
+
 export default defineConfig({
   plugins: [
     react(),
@@ -19,6 +44,10 @@ export default defineConfig({
           type: 'image/png',
         })),
       },
+      devOptions: {
+        enabled: true,
+      },
     }),
+    versioning(),
   ],
 });

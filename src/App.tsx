@@ -2,6 +2,7 @@ import React from 'react';
 import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import CatLoader from './components/CatLoader';
 import { ErrorBoundary } from './components/ErrorBoundary';
+import ReloadPrompt from './components/ReloadPrompt';
 import { Api } from './lib/api';
 import LoginPage from './pages/Login';
 import MainPage from './pages/Main';
@@ -21,6 +22,7 @@ function App() {
 
   return (
     <ErrorBoundary>
+      <ReloadPrompt />
       <React.Suspense fallback={<CatLoader />}>
         <Routes>
           <Route path="/" element={<MainPage />} />

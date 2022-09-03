@@ -3,7 +3,7 @@ import { useRecoilValue } from 'recoil';
 import { ScheduleAtom } from '../../../../atoms/schedule.atom';
 import View from '../../../../components/View';
 import { getTime } from '../../../../lib/api';
-import { MidisDay } from '../../../../lib/api.d';
+import { MidisDay } from '../../../../lib/api.types';
 
 import style from './style.module.scss';
 

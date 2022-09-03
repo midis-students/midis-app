@@ -38,3 +38,11 @@ export interface Mark {
   mark: string;
   details: string;
 }
+
+export interface Profile {
+  id: number;
+  name: string;
+  pic: string;
+  group: string;
+  type: string;
+}

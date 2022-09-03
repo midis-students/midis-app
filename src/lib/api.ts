@@ -1,4 +1,5 @@
-import { ApiError, ApiSchedule, MidisSchedule, MidisDay, MidisLesson, ApiMarks } from './api.d';
+import { Profile } from './api.types';
+import { ApiError, ApiSchedule, MidisSchedule, MidisDay, MidisLesson, ApiMarks } from './api.types';
 import { TokenAtom } from './../atoms/token.atom';
 import { getRecoil, setRecoil } from 'recoil-nexus';
 import axios from 'axios';
@@ -36,6 +37,16 @@ export class Api {
     setRecoil(TokenAtom, null);
     localStorage.removeItem('token');
     return false;
+  }
+
+  static async profile() {
+    const { data } = await axios.get<Profile>(this.baseURL + 'profile', {
+      headers: {
+        Authorization: this.token,
+      },
+    });
+
+    return data;
   }
 
   static async schedule() {

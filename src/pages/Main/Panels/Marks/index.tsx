@@ -2,7 +2,7 @@ import { useRecoilValue } from 'recoil';
 import { MarksAtom } from '../../../../atoms/marks.atom';
 import { Colors } from '../../../../components/Colors';
 import View from '../../../../components/View';
-import { Mark } from '../../../../lib/api.d';
+import { Mark } from '../../../../lib/api.types';
 
 import style from './style.module.scss';
 

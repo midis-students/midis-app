@@ -1,0 +1,22 @@
+.profile {
+  display: flex;
+
+  gap: 1em;
+
+  img {
+    width: 33%;
+    border-radius: 5px;
+  }
+
+  div {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.version {
+  background-color: var(--background-overlay);
+  padding: 1em;
+  margin-top: 1em;
+  border-radius: 5px;
+}

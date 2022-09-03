@@ -28,3 +28,13 @@ export interface MidisLesson {
   danger: boolean;
   time: { start: string; end: string };
 }
+
+export interface ApiMarks {
+  [groupName: string]: Mark[];
+}
+
+export interface Mark {
+  date: string;
+  mark: string;
+  details: string;
+}

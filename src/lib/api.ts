@@ -31,8 +31,7 @@ export class Api {
           Authorization: token,
         },
       });
-
-      return data.ok;
+      if (data.ok) return true;
     }
     setRecoil(TokenAtom, null);
     localStorage.removeItem('token');
@@ -108,48 +107,48 @@ export class Schedule {
 
 export function getTime(day: MidisDay) {
   const now = new Date();
-  const temp = new Date();
-  temp.setSeconds(0);
 
-  let i = 0;
+  var current = 0;
 
-  const format = (seconds: number) => {
-    seconds /= 1000;
-    return {
-      hours: Math.floor(seconds / 3600)
-        .toString()
-        .padStart(2, '0'),
-      minutes: Math.floor((seconds % 3600) / 60)
-        .toString()
-        .padStart(2, '0'),
-      seconds: Math.floor((seconds % 3600) % 60)
-        .toString()
-        .padStart(2, '0'),
-    };
-  };
-
-  for (const par of day.dayPars) {
-    const time = par.time;
+  for (var i = 1; i < day.dayPars.length; i++) {
+    const time = day.dayPars[i].time;
     const start = time.start.split(':').map((value) => Number(value));
+    const startTime = new Date();
+    startTime.setHours(start[0]);
+    startTime.setMinutes(start[1]);
+    startTime.setSeconds(0);
     const end = time.end.split(':').map((value) => Number(value));
-    temp.setHours(start[0]);
-    temp.setMinutes(start[1]);
+    const endTime = new Date();
+    endTime.setHours(end[0]);
+    endTime.setMinutes(end[1]);
+    endTime.setSeconds(0);
 
-    if (temp.getTime() - now.getTime() >= 0) {
-      const { hours, minutes, seconds } = format(temp.getTime() - now.getTime());
+    current = i - 1;
+
+    if (startTime >= now) {
+      //pre End time
+      var preEnd = day.dayPars[i - 1].time.end.split(':').map((value) => Number(value));
+      const preEndTime = new Date();
+      preEndTime.setHours(preEnd[0]);
+      preEndTime.setMinutes(preEnd[1]);
+      preEndTime.setSeconds(0);
+
+      var outdate = new Date(preEndTime.getTime() - now.getTime());
+
+      var preHours = preEndTime.getHours() - now.getHours() - 1,
+        preMinutes = outdate.getMinutes().toString().padStart(2, '0'),
+        preSeconds = outdate.getSeconds().toString().padStart(2, '0');
 
       return {
-        current: i,
-        time: +hours > 0 ? `${hours}:${minutes}` : `${minutes}:${seconds}`,
+        current: current,
+        time: `${(preHours ? preHours + ':' : '') + preMinutes}:${preSeconds}`,
       };
     }
-
-    i++;
   }
-  const { hours, minutes, seconds } = format(temp.getTime() - now.getTime());
+
   return {
-    current: i,
-    time: +hours > 0 ? `${hours}:${minutes}` : `${minutes}:${seconds}`,
+    current: 0,
+    time: `Перемена`,
   };
 }
 

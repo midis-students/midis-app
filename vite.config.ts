@@ -38,6 +38,10 @@ export default defineConfig({
         short_name: 'midis-app',
         start_url: '.',
         display: 'standalone',
+        description: 'Мидис клиент для portal.midis.info',
+        background_color: '#222222',
+        theme_color: '#141414',
+        orientation: 'portrait-primary',
         icons: [48, 72, 96, 144, 168, 192].map((size) => ({
           src: `icons/${size}.png`,
           sizes: `${size}x${size}`,

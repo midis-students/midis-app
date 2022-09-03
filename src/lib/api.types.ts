@@ -4,7 +4,7 @@ export interface ApiError {
 }
 
 export interface ApiSchedule {
-  [x: string]: Schedule;
+  [x: string]: { weeks: MidisSchedule };
 }
 
 export interface MidisSchedule {

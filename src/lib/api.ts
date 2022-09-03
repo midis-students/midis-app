@@ -76,8 +76,6 @@ export class Schedule {
         return day;
       }
     }
-
-    return this.getAllDays()[0];
   }
   getToday() {
     return this.getDay(new Date());
@@ -106,6 +104,53 @@ export class Schedule {
   private getDaySchedule(day: MidisDay, id: number) {
     return schedule_time[day.dayName.includes('Суббота') ? 'saturday' : 'weekdays'][id - 1];
   }
+}
+
+export function getTime(day: MidisDay) {
+  const now = new Date();
+  const temp = new Date();
+  temp.setSeconds(0);
+
+  let i = 0;
+
+  const format = (seconds: number) => {
+    seconds /= 1000;
+    return {
+      hours: Math.floor(seconds / 3600)
+        .toString()
+        .padStart(2, '0'),
+      minutes: Math.floor((seconds % 3600) / 60)
+        .toString()
+        .padStart(2, '0'),
+      seconds: Math.floor((seconds % 3600) % 60)
+        .toString()
+        .padStart(2, '0'),
+    };
+  };
+
+  for (const par of day.dayPars) {
+    const time = par.time;
+    const start = time.start.split(':').map((value) => Number(value));
+    const end = time.end.split(':').map((value) => Number(value));
+    temp.setHours(start[0]);
+    temp.setMinutes(start[1]);
+
+    if (temp.getTime() - now.getTime() >= 0) {
+      const { hours, minutes, seconds } = format(temp.getTime() - now.getTime());
+
+      return {
+        current: i,
+        time: +hours > 0 ? `${hours}:${minutes}` : `${minutes}:${seconds}`,
+      };
+    }
+
+    i++;
+  }
+  const { hours, minutes, seconds } = format(temp.getTime() - now.getTime());
+  return {
+    current: i,
+    time: +hours > 0 ? `${hours}:${minutes}` : `${minutes}:${seconds}`,
+  };
 }
 
 export const schedule_time = {

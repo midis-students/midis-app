@@ -1,6 +1,8 @@
+import React from 'react';
 import { useRecoilValue } from 'recoil';
 import { ScheduleAtom } from '../../../../atoms/schedule.atom';
 import View from '../../../../components/View';
+import { getTime } from '../../../../lib/api';
 import { MidisDay } from '../../../../lib/api.d';
 
 import style from './style.module.scss';
@@ -13,8 +15,8 @@ export default function TableView() {
 
   return (
     <View>
-      <DayRender day={today} tomorrow={false} />
-      <DayRender day={tomorrow} tomorrow={true} />
+      {today && <DayRender day={today} tomorrow={false} />}
+      {tomorrow && <DayRender day={tomorrow} tomorrow={true} />}
     </View>
   );
 }
@@ -25,7 +27,17 @@ interface DayRenderProps {
 }
 
 function DayRender({ day, tomorrow }: DayRenderProps) {
-  const current = 0;
+  const [{ current, time }, setTime] = React.useState<ReturnType<typeof getTime>>({} as any);
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      setTime(getTime(day));
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+
   const showAlt = true;
   return (
     <>
@@ -47,7 +59,7 @@ function DayRender({ day, tomorrow }: DayRenderProps) {
               </span>
               <span className={style.meta__teacher}>{par.teacher}</span>
             </div>
-            {!tomorrow && i === current && <div className={style.tag}>{}</div>}
+            {!tomorrow && i === current && <div className={style.tag}>{time}</div>}
             {!tomorrow && i - 1 === current && <div className={style.tag}>Далее</div>}
           </li>
         ))}

@@ -1,5 +1,4 @@
 import { Api } from './../lib/api';
-import { TokenAtom } from './token.atom';
 import { selector } from 'recoil';
 
 export const ScheduleAtom = selector({

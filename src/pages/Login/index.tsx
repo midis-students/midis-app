@@ -1,7 +1,7 @@
 import React from 'react';
 import Button from '../../components/Button';
 import Input from '../../components/Input';
-import { ApiError } from '../../lib/api.d';
+import { ApiError } from '../../lib/api.types';
 import { Api } from '../../lib/api';
 
 import style from './style.module.scss';

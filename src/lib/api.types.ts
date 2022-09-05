@@ -4,7 +4,7 @@ export interface ApiError {
 }
 
 export interface ApiSchedule {
-  [x: string]: Schedule;
+  [x: string]: { weeks: MidisSchedule };
 }
 
 export interface MidisSchedule {
@@ -27,4 +27,22 @@ export interface MidisLesson {
   teacher: string;
   danger: boolean;
   time: { start: string; end: string };
+}
+
+export interface ApiMarks {
+  [groupName: string]: Mark[];
+}
+
+export interface Mark {
+  date: string;
+  mark: string;
+  details: string;
+}
+
+export interface Profile {
+  id: number;
+  name: string;
+  pic: string;
+  group: string;
+  type: string;
 }

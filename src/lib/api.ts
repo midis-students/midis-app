@@ -1,4 +1,5 @@
-import { ApiError, ApiSchedule, MidisSchedule, MidisDay, MidisLesson } from './api.d';
+import { Profile } from './api.types';
+import { ApiError, ApiSchedule, MidisSchedule, MidisDay, MidisLesson, ApiMarks } from './api.types';
 import { TokenAtom } from './../atoms/token.atom';
 import { getRecoil, setRecoil } from 'recoil-nexus';
 import axios from 'axios';
@@ -38,6 +39,16 @@ export class Api {
     return false;
   }
 
+  static async profile() {
+    const { data } = await axios.get<Profile>(this.baseURL + 'profile', {
+      headers: {
+        Authorization: this.token,
+      },
+    });
+
+    return data;
+  }
+
   static async schedule() {
     const { data } = await axios.get<ApiSchedule>(this.baseURL + 'schedule', {
       headers: {
@@ -51,6 +62,13 @@ export class Api {
       result[group] = new Schedule(group, schedule.weeks);
     });
     return result;
+  }
+
+  static async daily() {
+    const { data } = await axios.get<ApiMarks>(this.baseURL + 'daily', {
+      headers: { Authorization: this.token },
+    });
+    return data;
   }
 }
 
@@ -106,6 +124,7 @@ export class Schedule {
 }
 
 export function getTime(day: MidisDay) {
+  /// TODO Переделать
   const now = new Date();
 
   var current = 0;

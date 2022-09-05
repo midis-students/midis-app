@@ -25,7 +25,7 @@ export default function LoginPage() {
 
   return (
     <div className={style.container}>
-      <div>
+      <div className={style.containerWrapper}>
         <div className={style.logotype}>
           <img
             src={`https://web.damirlut.online/splash${isDark ? '_dark' : ''}.png`}

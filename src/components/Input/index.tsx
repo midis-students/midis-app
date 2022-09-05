@@ -9,9 +9,9 @@ export default function Input(props: InputProps) {
   const { label, ...inputProps } = props;
 
   return (
-    <div>
+    <div className={style.input}>
       <label>{props.label}</label>
-      <input className={style.input} {...inputProps} />
+      <input  {...inputProps} />
     </div>
   );
 }

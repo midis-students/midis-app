@@ -14,7 +14,7 @@ export default function MarksView() {
       <h1>Оценки</h1>
       <ul className={style['marks-list']}>
         {Object.entries(marks).map(([object, values]) => (
-          <MarkView object={object} marks={values} />
+          <MarkView key={`${object}`} object={object} marks={values} />
         ))}
       </ul>
     </View>

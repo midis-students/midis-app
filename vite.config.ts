@@ -33,6 +33,7 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
+      injectRegister: 'auto',
       manifest: {
         name: 'Midis Student',
         short_name: 'midis-app',

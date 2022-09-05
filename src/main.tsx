@@ -6,8 +6,12 @@ import RecoilNexus from 'recoil-nexus';
 import App from './App';
 import './index.scss';
 
+import ServiceWorker from './servis-worker';
+('./servis-worker/');
+
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
+    <ServiceWorker />
     <BrowserRouter>
       <RecoilRoot>
         <RecoilNexus />

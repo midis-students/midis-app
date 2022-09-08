@@ -1,6 +1,7 @@
 import React from 'react';
 import { useRecoilValue } from 'recoil';
 import { ScheduleAtom } from '../../../../atoms/schedule.atom';
+import Div from '../../../../components/Div';
 import View from '../../../../components/View';
 import { getTime } from '../../../../lib/api';
 import { MidisDay } from '../../../../lib/api.types';
@@ -15,7 +16,7 @@ export default function TableView() {
 
   return (
     <View>
-      {today && <DayRender day={today} tomorrow={false} />}
+      {today && <DayRender day={today} tomorrow={false} />}{' '}
       {tomorrow && <DayRender day={tomorrow} tomorrow={true} />}
     </View>
   );
@@ -40,7 +41,7 @@ function DayRender({ day, tomorrow }: DayRenderProps) {
 
   const showAlt = true;
   return (
-    <>
+    <div className={style.table}>
       <h2 className={style.head}>
         {tomorrow ? 'Завтра' : 'Сегодня'}
         <span>{day.dayName}</span>
@@ -64,6 +65,6 @@ function DayRender({ day, tomorrow }: DayRenderProps) {
           </li>
         ))}
       </ul>
-    </>
+    </div>
   );
 }

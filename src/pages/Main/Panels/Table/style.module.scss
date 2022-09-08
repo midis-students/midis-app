@@ -9,57 +9,60 @@
   }
 }
 
-.list {
-  li {
-    position: relative;
-    list-style: none;
-    height: 3em;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 1.5ch;
-    padding: 0.25em 0.25em;
+.table {
+  margin-top: 1em;
 
-    $border-radius: 5px;
-
-    &:first-child {
-      border-top-left-radius: $border-radius;
-      border-top-right-radius: $border-radius;
-    }
-    &:last-child {
-      border-bottom-left-radius: $border-radius;
-      border-bottom-right-radius: $border-radius;
-    }
-
-    .schedule-time {
+  .list {
+    li {
+      position: relative;
+      list-style: none;
+      height: 3em;
       display: flex;
-      flex-direction: column;
       align-items: center;
-    }
+      gap: 5px;
+      font-size: 1.5ch;
+      padding: 0.25em 0.25em;
 
-    .meta {
-      display: flex;
-      flex-direction: column;
+      $border-radius: 5px;
 
-      &__object {
-        font-weight: bold;
+      &:first-child {
+        border-top-left-radius: $border-radius;
+        border-top-right-radius: $border-radius;
+      }
+      &:last-child {
+        border-bottom-left-radius: $border-radius;
+        border-bottom-right-radius: $border-radius;
       }
 
-      &__teacher {
-        font-size: 2ch;
+      .schedule-time {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
       }
-    }
 
-    .tag {
-      position: absolute;
-      right: 1em;
-      padding: 1px 4px;
-      background-color: #fff;
-      border-radius: 1em;
+      .meta {
+        display: flex;
+        flex-direction: column;
+
+        &__object {
+          font-weight: bold;
+        }
+
+        &__teacher {
+          font-size: 2ch;
+        }
+      }
+
+      .tag {
+        position: absolute;
+        right: 1em;
+        padding: 1px 4px;
+        background-color: #fff;
+        border-radius: 1em;
+      }
     }
   }
 }
-
 @each $name, $color in $colors {
   $i: index($colors, $name $color);
   .row-#{$i} {

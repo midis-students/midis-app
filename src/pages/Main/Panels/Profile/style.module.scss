@@ -4,7 +4,7 @@
   gap: 1em;
 
   img {
-    width: 33%;
+    width: 4em;
     border-radius: 5px;
   }
 
@@ -15,10 +15,7 @@
 }
 
 .developers {
-  background-color: var(--background-overlay);
-  padding: 1em;
   margin-top: 1em;
-  border-radius: 5px;
 
   ul {
     margin-top: 1em;
@@ -28,7 +25,6 @@
 
     .developer {
       display: flex;
-      align-items: center;
       gap: 1em;
 
       div {
@@ -38,7 +34,7 @@
 
       img {
         width: 4em;
-        border-radius: 1em;
+        border-radius: 5px;
       }
     }
   }

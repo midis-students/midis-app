@@ -1,5 +1,6 @@
 import { useRecoilValue } from 'recoil';
 import { ProfileAtom } from '../../../../atoms/profile.atom';
+import Div from '../../../../components/Div';
 import View from '../../../../components/View';
 
 import style from './style.module.scss';
@@ -21,7 +22,7 @@ const developers = [
     name: 'Тот самый чел',
     subname: 'Маркин Егор',
     image:
-      'https://portal.midis.info/upload/main/2d0/4lgw8i9rxfqwpa5p05ju5k0yliqpzgwz/egor_livesey.gif',
+      'https://sun2.is74.userapi.com/s/v1/ig2/J4Nq1tWcbNF475CY4INB5bMTsJHKhUcwpqsguSaJ0MsTn8cAjnUsl3qbkbTasEvGun7-PFvEMvr0I785gHIegW_f.jpg?size=200x200&quality=95&crop=367,533,539,539&ava=1',
   },
 ];
 
@@ -31,14 +32,14 @@ export default function ProfileView() {
   const version = document.getElementsByTagName('html')[0].getAttribute('version');
   return (
     <View>
-      <div className={style.profile}>
+      <Div className={style.profile}>
         <img src={profile.pic} />
         <div>
           <span>{profile.name}</span>
           <span>{profile.group}</span>
         </div>
-      </div>
-      <div className={style.developers}>
+      </Div>
+      <Div className={style.developers}>
         <h3>Разработчики</h3>
         <ul>
           {developers.map((developer) => (
@@ -51,8 +52,8 @@ export default function ProfileView() {
             </li>
           ))}
         </ul>
-      </div>
-      <h4 className={style.version}>Version: {version}</h4>
+      </Div>
+      <Div className={style.version}>{version}</Div>
     </View>
   );
 }

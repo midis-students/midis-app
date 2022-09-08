@@ -27,11 +27,16 @@ export class Api {
   static async test() {
     const token = getRecoil(TokenAtom);
     if (token) {
-      const { data } = await axios.get(this.baseURL + 'test', {
+      const { data, headers } = await axios.get(this.baseURL + 'test', {
         headers: {
           Authorization: token,
         },
       });
+      if (headers['x-update']) {
+        setRecoil(TokenAtom, headers['x-update']);
+        console.log('Updating token...');
+        return true;
+      }
       if (data.ok) return true;
     }
     setRecoil(TokenAtom, null);
@@ -40,16 +45,26 @@ export class Api {
   }
 
   static async profile() {
+    const profile = this.getCache('profile');
+    if (profile) {
+      return profile;
+    }
     const { data } = await axios.get<Profile>(this.baseURL + 'profile', {
       headers: {
         Authorization: this.token,
       },
     });
 
+    this.setCache('profile', data);
+
     return data;
   }
 
   static async schedule() {
+    const schedule = this.getCache('schedule');
+    if (schedule) {
+      return schedule;
+    }
     const { data } = await axios.get<ApiSchedule>(this.baseURL + 'schedule', {
       headers: {
         Authorization: this.token,
@@ -61,14 +76,42 @@ export class Api {
     Object.entries(data).forEach(([group, schedule]) => {
       result[group] = new Schedule(group, schedule.weeks);
     });
+
+    this.setCache('schedule', result);
+
     return result;
   }
 
   static async daily() {
+    const daily = this.getCache('daily');
+    if (daily) {
+      return daily;
+    }
     const { data } = await axios.get<ApiMarks>(this.baseURL + 'daily', {
       headers: { Authorization: this.token },
     });
+
+    this.setCache('daily', data);
+
     return data;
+  }
+
+  private static getCache(key: string) {
+    const time = localStorage.getItem(key + '-t');
+    if (time) {
+      if (Date.now() - Number(time) >= 1000 * 60 * 5) {
+        const item = localStorage.getItem(key);
+        if (item) {
+          return JSON.parse(item);
+        }
+      }
+    }
+    return null;
+  }
+
+  private static setCache(key: string, item: Record<string, any>) {
+    localStorage.setItem(key, JSON.stringify(item));
+    localStorage.setItem(key + '-t', Date.now().toString());
   }
 }
 

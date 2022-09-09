@@ -44,32 +44,46 @@ export class Api {
     return false;
   }
 
-  static async profile() {
-    const profile = this.getCache('profile');
+  static async profile(): Promise<Profile> {
+    const profile = this.getCache<Profile>('profile');
     if (profile) {
       return profile;
     }
-    const { data } = await axios.get<Profile>(this.baseURL + 'profile', {
-      headers: {
-        Authorization: this.token,
-      },
-    });
+    const { data } = await axios
+      .get<Profile>(this.baseURL + 'profile', {
+        headers: {
+          Authorization: this.token,
+        },
+      })
+      .catch((e) => {
+        console.error(e);
+        return {
+          data: this.getCache('profile', true) as Profile,
+        };
+      });
 
     this.setCache('profile', data);
 
     return data;
   }
 
-  static async schedule() {
-    const schedule = this.getCache('schedule');
+  static async schedule(): Promise<Record<string, Schedule>> {
+    const schedule = this.getCache<Record<string, Schedule>>('schedule');
     if (schedule) {
       return schedule;
     }
-    const { data } = await axios.get<ApiSchedule>(this.baseURL + 'schedule', {
-      headers: {
-        Authorization: this.token,
-      },
-    });
+    const { data } = await axios
+      .get<ApiSchedule>(this.baseURL + 'schedule', {
+        headers: {
+          Authorization: this.token,
+        },
+      })
+      .catch((e) => {
+        console.error(e);
+        return {
+          data: this.getCache('schedule', true) as ApiSchedule,
+        };
+      });
 
     const result: Record<string, Schedule> = {};
 
@@ -82,24 +96,31 @@ export class Api {
     return result;
   }
 
-  static async daily() {
-    const daily = this.getCache('daily');
+  static async daily(): Promise<ApiMarks> {
+    const daily = this.getCache<ApiMarks>('daily');
     if (daily) {
       return daily;
     }
-    const { data } = await axios.get<ApiMarks>(this.baseURL + 'daily', {
-      headers: { Authorization: this.token },
-    });
+    const { data } = await axios
+      .get(this.baseURL + 'daily', {
+        headers: { Authorization: this.token },
+      })
+      .catch((e) => {
+        console.error(e);
+        return {
+          data: this.getCache('daily', true),
+        };
+      });
 
     this.setCache('daily', data);
 
     return data;
   }
 
-  private static getCache(key: string) {
+  private static getCache<T>(key: string, force: boolean = false): T | null {
     const time = localStorage.getItem(key + '-t');
     if (time) {
-      if (Date.now() - Number(time) >= 1000 * 60 * 5) {
+      if (force || Date.now() - Number(time) >= 1000 * 60 * 5) {
         const item = localStorage.getItem(key);
         if (item) {
           return JSON.parse(item);

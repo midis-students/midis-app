@@ -86,7 +86,7 @@ export class Api {
           Authorization: this.token,
         },
       })
-      .then((data) => {
+      .then(({ data }) => {
         return {
           data,
           cachedData: undefined,

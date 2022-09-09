@@ -5,16 +5,27 @@ import { ApiError } from '../../lib/api.types';
 import { Api } from '../../lib/api';
 
 import style from './style.module.scss';
+import { useSearchParams } from 'react-router-dom';
 
 export default function LoginPage() {
   const isDark = true;
+
+  const [searchParams] = useSearchParams();
 
   const [login, setLogin] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [error, setError] = React.useState<ApiError | null>(null);
 
-  const auth = () => {
-    Api.login(login, password).then((data) => {
+  React.useEffect(() => {
+    if (searchParams.has('login') && searchParams.has('password')) {
+      auth(searchParams.get('login'), searchParams.get('password'));
+    }
+  }, []);
+
+  const auth = (_login: string | null = null, _password: string | null = null) => {
+    _login = _login || login;
+    _password = _password || password;
+    Api.login(_login, _password).then((data) => {
       if (typeof data === 'object') {
         setError(data);
       } else {
@@ -48,7 +59,7 @@ export default function LoginPage() {
             value={password}
             onChange={(e) => setPassword(e.currentTarget.value)}
           />
-          <Button variant="success" onClick={auth}>
+          <Button variant="success" onClick={() => auth()}>
             Войти
           </Button>
         </div>

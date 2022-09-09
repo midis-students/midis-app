@@ -13,7 +13,7 @@ function App() {
   React.useEffect(() => {
     Api.test().then((ok) => {
       if (!ok) {
-        if (location.pathname !== '/login') navigate('/login');
+        if (location.pathname !== '/login') navigate('/login' + location.search);
       } else {
         if (location.pathname !== '/') navigate('/');
       }

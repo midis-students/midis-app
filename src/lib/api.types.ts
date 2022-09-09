@@ -46,3 +46,14 @@ export interface Profile {
   group: string;
   type: string;
 }
+
+export interface ApiInfo {
+  version: string;
+  developers: [
+    {
+      name: string;
+      subname: string;
+      image: string;
+    },
+  ];
+}

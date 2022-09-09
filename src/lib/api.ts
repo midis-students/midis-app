@@ -1,4 +1,4 @@
-import { Profile } from './api.types';
+import { ApiInfo, Profile } from './api.types';
 import { ApiError, ApiSchedule, MidisSchedule, MidisDay, MidisLesson, ApiMarks } from './api.types';
 import { TokenAtom } from './../atoms/token.atom';
 import { getRecoil, setRecoil } from 'recoil-nexus';
@@ -139,6 +139,24 @@ export class Api {
       });
 
     this.setCache('daily', data);
+
+    return data;
+  }
+
+  static async info(): Promise<ApiInfo> {
+    const cached = this.getCache<ApiInfo>('info');
+    if (cached) {
+      return cached;
+    }
+
+    const { data } = await axios.get(this.baseURL + 'info').catch((e) => {
+      console.error(e);
+      return {
+        data: this.getCache('info', true),
+      };
+    });
+
+    this.setCache('info', data);
 
     return data;
   }

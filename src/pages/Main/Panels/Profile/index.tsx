@@ -10,7 +10,7 @@ const developers = [
     name: 'Разработал это приложение',
     subname: 'Лутфрахманов Дамир',
     image:
-      'https://portal.midis.info/upload/resize_cache/main/7a5/mvssbnm6001oon0s0zpcwomiud6mi88g/200_200_2/livesey.webp',
+      'https://portal.midis.info/upload/resize_cache/main/780/yncs8n7bvk7vd3q8ri9gv59qi4ovpfu0/100_100_2/livesey2.webp',
   },
   {
     name: 'Разработал сервер',

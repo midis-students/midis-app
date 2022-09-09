@@ -34,6 +34,7 @@ export class Api {
       });
       if (headers['x-update']) {
         setRecoil(TokenAtom, headers['x-update']);
+        localStorage.setItem('token', headers['x-update']);
         console.log('Updating token...');
         return true;
       }
@@ -70,20 +71,45 @@ export class Api {
   static async schedule(): Promise<Record<string, Schedule>> {
     const schedule = this.getCache<Record<string, Schedule>>('schedule');
     if (schedule) {
-      return schedule;
+      const result: Record<string, Schedule> = {};
+      Object.entries(schedule).forEach(([group, schedule]) => {
+        result[group] = new Schedule(group, {
+          firstWeek: schedule.data.firstWeek,
+          secondWeek: schedule.data.secondWeek,
+        });
+      });
+      return result;
     }
-    const { data } = await axios
+    const { data, cachedData } = await axios
       .get<ApiSchedule>(this.baseURL + 'schedule', {
         headers: {
           Authorization: this.token,
         },
       })
+      .then((data) => {
+        return {
+          data,
+          cachedData: undefined,
+        };
+      })
       .catch((e) => {
         console.error(e);
         return {
-          data: this.getCache('schedule', true) as ApiSchedule,
+          cachedData: this.getCache('schedule', true) as Record<string, Schedule>,
+          data: undefined,
         };
       });
+
+    if (cachedData) {
+      const result: Record<string, Schedule> = {};
+      Object.entries(cachedData).forEach(([group, schedule]) => {
+        result[group] = new Schedule(group, {
+          firstWeek: schedule.data.firstWeek,
+          secondWeek: schedule.data.secondWeek,
+        });
+      });
+      return result;
+    }
 
     const result: Record<string, Schedule> = {};
 
@@ -138,7 +164,7 @@ export class Api {
 
 export class Schedule {
   groupName: string;
-  private data: MidisSchedule;
+  data: MidisSchedule;
   constructor(groupName: string, data: MidisSchedule) {
     this.groupName = groupName;
     this.data = data;

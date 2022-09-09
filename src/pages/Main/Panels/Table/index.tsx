@@ -10,7 +10,7 @@ import style from './style.module.scss';
 
 export default function TableView() {
   const schedule = useRecoilValue(ScheduleAtom);
-
+  console.log(schedule);
   const today = schedule.getToday();
   const tomorrow = schedule.getTomorrow();
 

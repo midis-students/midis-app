@@ -11,6 +11,11 @@
   div {
     display: flex;
     flex-direction: column;
+    width: 100%;
+
+    button {
+      height: 1.5em;
+    }
   }
 }
 
@@ -44,6 +49,7 @@
   background-color: var(--background-overlay);
   padding: 1em;
   margin-top: 1em;
+  margin-bottom: 1em;
   border-radius: 5px;
   display: flex;
   flex-direction: column;

@@ -8,6 +8,8 @@ import TableView from './Panels/Table';
 import IconMark from '../../assets/mark.svg';
 import IconProfile from '../../assets/profile.svg';
 import IconTable from '../../assets/table.svg';
+import IconChat from '../../assets/chat.svg';
+import ChatView from './Panels/Chat';
 
 export default function MainPage() {
   const [tabIndex, setTabIndex] = React.useState(1);
@@ -20,23 +22,27 @@ export default function MainPage() {
     {
       icon: IconMark,
       label: 'Оценки',
+      view: MarksView,
     },
     {
       icon: IconTable,
       label: 'Расписание',
+      view: TableView,
     },
+
     {
       icon: IconProfile,
       label: 'Профиль',
+      view: ProfileView,
     },
   ];
 
   return (
     <main>
       <SwipeableViews index={tabIndex} enableMouseEvents onChangeIndex={handelChangeIndex}>
-        <MarksView />
-        <TableView />
-        <ProfileView />
+        {tabs.map((value) => (
+          <value.view key={value.view.toString()} />
+        ))}
       </SwipeableViews>
       <Tabs>
         {tabs.map((value, i) => (
@@ -48,4 +54,3 @@ export default function MainPage() {
     </main>
   );
 }
-

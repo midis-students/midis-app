@@ -1,6 +1,7 @@
 import { useRecoilValue } from 'recoil';
 import { InfoAtom } from '../../../../atoms/info.atom';
 import { ProfileAtom } from '../../../../atoms/profile.atom';
+import Button from '../../../../components/Button';
 import Div from '../../../../components/Div';
 import View from '../../../../components/View';
 
@@ -18,6 +19,14 @@ export default function ProfileView() {
         <div>
           <span>{profile.name}</span>
           <span>{profile.group}</span>
+          <Button
+            variant="danger"
+            onClick={() => {
+              localStorage.clear();
+              location.reload();
+            }}>
+            Выйти
+          </Button>
         </div>
       </Div>
       <Div className={style.developers}>

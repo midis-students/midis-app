@@ -161,6 +161,14 @@ export class Api {
     return data;
   }
 
+  static async websocket(): Promise<string> {
+    const { data } = await axios.get(this.baseURL + 'ws', {
+      headers: { Authorization: this.token },
+    });
+
+    return data.url;
+  }
+
   private static getCache<T>(key: string, force: boolean = false): T | null {
     const time = localStorage.getItem(key + '-t');
     if (time) {
@@ -291,7 +299,7 @@ export const schedule_time = {
     { start: '20:35', end: '22:10' },
   ],
   saturday: [
-    { start: '8:00', end: '09:35' },
+    { start: '08:00', end: '09:35' },
     { start: '09:45', end: '11:20' },
     { start: '11:30', end: '13:05' },
     { start: '13:15', end: '14:50' },

@@ -12,6 +12,7 @@ export default function Button(props: ButtonProps) {
   const { variant, children, ...rest } = props;
 
   const properties = {
+    ...rest.style,
     '--color': `var(--${variant || 'primary'})`,
   } as CSSProperties;
 

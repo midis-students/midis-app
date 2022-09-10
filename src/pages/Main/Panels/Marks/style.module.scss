@@ -1,5 +1,8 @@
 .marks-list {
   margin-top: 1em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25em;
 
   .mark-container {
     list-style: none;

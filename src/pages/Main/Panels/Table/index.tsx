@@ -10,7 +10,6 @@ import style from './style.module.scss';
 
 export default function TableView() {
   const schedule = useRecoilValue(ScheduleAtom);
-  console.log(schedule);
   const today = schedule.getToday();
   const tomorrow = schedule.getTomorrow();
 
@@ -49,7 +48,7 @@ function DayRender({ day, tomorrow }: DayRenderProps) {
       <ul className={style.list}>
         {day.dayPars.map((par, i) => (
           <li key={par.id} className={style[`row-${i + 1}`]}>
-            <span>{par.class}</span>
+            <span className={style['schedule-class']}>{par.class}</span>
             <span className={style['schedule-time']}>
               <div>{par.time.start}</div>
               <div>{par.time.end}</div>

@@ -8,9 +8,7 @@ export default function PushService() {
       // r &&
       //   setInterval(() => {
       //     r.update();
-
       //   }, intervalMS);
-      console.log('Service-worker registered');
     },
   });
   return null;

@@ -9,16 +9,23 @@ import IconMark from '../../assets/mark.svg';
 import IconProfile from '../../assets/profile.svg';
 import IconTable from '../../assets/table.svg';
 import IconChat from '../../assets/chat.svg';
+import IconNotes from '../../assets/notes.svg';
 import ChatView from './Panels/Chat';
+import ObsidianView from './Panels/Obsidian';
 
 export default function MainPage() {
-  const [tabIndex, setTabIndex] = React.useState(1);
+  const [tabIndex, setTabIndex] = React.useState(0);
 
   const handelChangeIndex = (e: number) => {
     setTabIndex(e);
   };
 
   const tabs = [
+    {
+      icon: IconNotes,
+      label: 'Заметки',
+      view: ObsidianView,
+    },
     {
       icon: IconMark,
       label: 'Оценки',

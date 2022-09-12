@@ -169,6 +169,14 @@ export class Api {
     return data.url;
   }
 
+  static async obsidian(path: string = ''){
+    const {data,headers} = await axios.get(this.baseURL + 'obsidian/'+path);
+    if (headers['content-type'].startsWith('application/json')){
+      return {data, raw: false}
+    }
+    return {data,raw: true};
+  }
+
   private static getCache<T>(key: string, force: boolean = false): T | null {
     const time = localStorage.getItem(key + '-t');
     if (time) {

@@ -180,7 +180,7 @@ export class Api {
   private static getCache<T>(key: string, force: boolean = false): T | null {
     const time = localStorage.getItem(key + '-t');
     if (time) {
-      if (force || Date.now() - Number(time) >= 1000 * 60 * 5) {
+      if (force || (Date.now() - Number(time) >= 1000 * 60 * 5)) {
         const item = localStorage.getItem(key);
         if (item) {
           return JSON.parse(item);

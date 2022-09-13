@@ -3,7 +3,7 @@ import { useRecoilValue } from 'recoil';
 import { ScheduleAtom } from '../../../../atoms/schedule.atom';
 import Div from '../../../../components/Div';
 import View from '../../../../components/View';
-import { getTime } from '../../../../lib/api';
+import { Api, FormatTime, getTime } from '../../../../lib/api';
 import { MidisDay } from '../../../../lib/api.types';
 
 import style from './style.module.scss';
@@ -12,9 +12,21 @@ export default function TableView() {
   const schedule = useRecoilValue(ScheduleAtom);
   const today = schedule.getToday();
   const tomorrow = schedule.getTomorrow();
+  const [cacheTime, setCacheTime] = React.useState('');
+
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      const time = FormatTime(Api.getCacheTime('schedule'));
+      setCacheTime(`${time.mins} минут назад`);
+    }, 1000);
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
 
   return (
     <View>
+      <span className={style.cacheTime}>{cacheTime}</span>
       {today && <DayRender day={today} tomorrow={false} />}{' '}
       {tomorrow && <DayRender day={tomorrow} tomorrow={true} />}
     </View>

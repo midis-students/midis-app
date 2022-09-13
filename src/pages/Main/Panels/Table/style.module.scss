@@ -1,5 +1,12 @@
 @import '../../../../colors.scss';
 
+.cacheTime {
+  background-color: var(--success);
+  padding: 0.25em;
+  border-radius: 5px;
+  font-size: 1.15ch;
+}
+
 .head {
   color: white;
   margin-bottom: 0;

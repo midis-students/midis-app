@@ -57,7 +57,6 @@ export default function ObsidianView() {
   };
 
   React.useEffect(() => {
-    console.log(path);
     getdata();
   }, [path]);
 

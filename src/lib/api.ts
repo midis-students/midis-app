@@ -46,117 +46,45 @@ export class Api {
   }
 
   static async profile(): Promise<Profile> {
-    const profile = this.getCache<Profile>('profile');
-    if (profile) {
-      return profile;
-    }
-    const { data } = await axios
-      .get<Profile>(this.baseURL + 'profile', {
-        headers: {
-          Authorization: this.token,
-        },
-      })
-      .catch((e) => {
-        console.error(e);
-        return {
-          data: this.getCache('profile', true) as Profile,
-        };
-      });
-
-    this.setCache('profile', data);
+    const { data } = await axios.get<Profile>(this.baseURL + 'profile', {
+      headers: {
+        Authorization: this.token,
+      },
+    });
 
     return data;
   }
 
-  static async schedule(): Promise<Record<string, Schedule>> {
-    const schedule = this.getCache<Record<string, Schedule>>('schedule');
-    if (schedule) {
-      const result: Record<string, Schedule> = {};
-      Object.entries(schedule).forEach(([group, schedule]) => {
-        result[group] = new Schedule(group, {
-          firstWeek: schedule.data.firstWeek,
-          secondWeek: schedule.data.secondWeek,
-        });
-      });
-      return result;
-    }
-    const { data, cachedData } = await axios
-      .get<ApiSchedule>(this.baseURL + 'schedule', {
-        headers: {
-          Authorization: this.token,
-        },
-      })
-      .then(({ data }) => {
-        return {
-          data,
-          cachedData: undefined,
-        };
-      })
-      .catch((e) => {
-        console.error(e);
-        return {
-          cachedData: this.getCache('schedule', true) as Record<string, Schedule>,
-          data: undefined,
-        };
-      });
-
-    if (cachedData) {
-      const result: Record<string, Schedule> = {};
-      Object.entries(cachedData).forEach(([group, schedule]) => {
-        result[group] = new Schedule(group, {
-          firstWeek: schedule.data.firstWeek,
-          secondWeek: schedule.data.secondWeek,
-        });
-      });
-      return result;
-    }
-
+  static transformSchedule(data: ApiSchedule) {
     const result: Record<string, Schedule> = {};
 
     Object.entries(data).forEach(([group, schedule]) => {
       result[group] = new Schedule(group, schedule.weeks);
     });
 
-    this.setCache('schedule', result);
-
     return result;
   }
 
-  static async daily(): Promise<ApiMarks> {
-    const daily = this.getCache<ApiMarks>('daily');
-    if (daily) {
-      return daily;
-    }
-    const { data } = await axios
-      .get(this.baseURL + 'daily', {
-        headers: { Authorization: this.token },
-      })
-      .catch((e) => {
-        console.error(e);
-        return {
-          data: this.getCache('daily', true),
-        };
-      });
+  static async schedule() {
+    const { data } = await axios.get<ApiSchedule>(this.baseURL + 'schedule', {
+      headers: {
+        Authorization: this.token,
+      },
+    });
 
-    this.setCache('daily', data);
+    return data;
+  }
+
+  static async daily(): Promise<ApiMarks> {
+    const { data } = await axios.get(this.baseURL + 'daily', {
+      headers: { Authorization: this.token },
+    });
 
     return data;
   }
 
   static async info(): Promise<ApiInfo> {
-    const cached = this.getCache<ApiInfo>('info');
-    if (cached) {
-      return cached;
-    }
-
-    const { data } = await axios.get(this.baseURL + 'info').catch((e) => {
-      console.error(e);
-      return {
-        data: this.getCache('info', true),
-      };
-    });
-
-    this.setCache('info', data);
+    const { data } = await axios.get(this.baseURL + 'info');
 
     return data;
   }
@@ -169,18 +97,18 @@ export class Api {
     return data.url;
   }
 
-  static async obsidian(path: string = ''){
-    const {data,headers} = await axios.get(this.baseURL + 'obsidian/'+path);
-    if (headers['content-type'].startsWith('application/json')){
-      return {data, raw: false}
+  static async obsidian(path: string = '') {
+    const { data, headers } = await axios.get(this.baseURL + 'obsidian/' + path);
+    if (headers['content-type'].startsWith('application/json')) {
+      return { data, raw: false };
     }
-    return {data,raw: true};
+    return { data, raw: true };
   }
 
-  private static getCache<T>(key: string, force: boolean = false): T | null {
+  static getCache<T>(key: string, force: boolean = false): T | null {
     const time = localStorage.getItem(key + '-t');
     if (time) {
-      if (force || (Date.now() - Number(time) >= 1000 * 60 * 5)) {
+      if (force || Date.now() - Number(time) >= 1000 * 60 * 5) {
         const item = localStorage.getItem(key);
         if (item) {
           return JSON.parse(item);
@@ -190,7 +118,11 @@ export class Api {
     return null;
   }
 
-  private static setCache(key: string, item: Record<string, any>) {
+  static getCacheTime(key: string) {
+    return (Date.now() - Number(localStorage.getItem(key + '-t'))) / 1000;
+  }
+
+  static setCache(key: string, item: Record<string, any>) {
     localStorage.setItem(key, JSON.stringify(item));
     localStorage.setItem(key + '-t', Date.now().toString());
   }
@@ -245,6 +177,14 @@ export class Schedule {
   private getDaySchedule(day: MidisDay, id: number) {
     return schedule_time[day.dayName.includes('Суббота') ? 'saturday' : 'weekdays'][id - 1];
   }
+}
+
+export function FormatTime(seconds: number) {
+  return {
+    hours: Math.trunc(seconds / 3600),
+    mins: Math.trunc((seconds % 3600) / 60),
+    secs: Math.trunc((seconds % 3600) % 60),
+  };
 }
 
 export function getTime(day: MidisDay) {

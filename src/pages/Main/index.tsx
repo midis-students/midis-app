@@ -14,7 +14,7 @@ import ChatView from './Panels/Chat';
 import ObsidianView from './Panels/Obsidian';
 
 export default function MainPage() {
-  const [tabIndex, setTabIndex] = React.useState(0);
+  const [tabIndex, setTabIndex] = React.useState(2);
 
   const handelChangeIndex = (e: number) => {
     setTabIndex(e);

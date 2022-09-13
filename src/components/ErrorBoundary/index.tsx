@@ -2,6 +2,7 @@ import React from 'react';
 export class ErrorBoundary extends React.Component<{ children: React.ReactNode }> {
   state = {
     hasError: false,
+    error: '',
   };
 
   constructor(props: any) {
@@ -12,7 +13,9 @@ export class ErrorBoundary extends React.Component<{ children: React.ReactNode }
     return { hasError: true };
   }
 
-  componentDidCatch(error: any, errorInfo: any) {}
+  componentDidCatch(error: any, errorInfo: any) {
+    this.setState((prev) => ({ ...prev, error: error.message }));
+  }
 
   render() {
     const version = document.getElementsByTagName('html')[0].getAttribute('version') || 'Dev';
@@ -29,6 +32,13 @@ export class ErrorBoundary extends React.Component<{ children: React.ReactNode }
           <strong style={{ marginBottom: '1em' }}>Что-то пошло не так...</strong>
           <img src="https://stikvk.ru/wp-content/uploads/2020/10/256-28-2.png" alt="oh no..." />
           <span>{version}</span>
+          <h5
+            style={{
+              marginTop: '1em',
+              color: '#ed3141',
+            }}>
+            {this.state.error}
+          </h5>
         </div>
       );
     }

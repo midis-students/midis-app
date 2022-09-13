@@ -3,7 +3,7 @@ import { useRecoilValue } from 'recoil';
 import { ScheduleAtom } from '../../../../atoms/schedule.atom';
 import Div from '../../../../components/Div';
 import View from '../../../../components/View';
-import { Api, FormatTime, getTime } from '../../../../lib/api';
+import { Api, FormatTime, getTime, MidisDayExtra } from '../../../../lib/api';
 import { MidisDay } from '../../../../lib/api.types';
 
 import style from './style.module.scss';
@@ -34,7 +34,7 @@ export default function TableView() {
 }
 
 interface DayRenderProps {
-  day: MidisDay;
+  day: MidisDayExtra;
   tomorrow: boolean;
 }
 
@@ -49,6 +49,7 @@ function DayRender({ day, tomorrow }: DayRenderProps) {
       clearInterval(interval);
     };
   }, []);
+  console.log('current', day.getCurrently());
 
   const showAlt = true;
   return (

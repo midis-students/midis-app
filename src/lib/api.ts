@@ -113,8 +113,8 @@ export class Api {
         if (item) {
           return JSON.parse(item);
         }
-      }else{
-        localStorage.removeItem(key+'-t');
+      } else {
+        localStorage.removeItem(key + '-t');
         localStorage.removeItem(key);
       }
     }
@@ -133,10 +133,14 @@ export class Api {
 
 export class Schedule {
   groupName: string;
-  data: MidisSchedule;
+  data: MidisSchedule & {
+    firstWeek: MidisDayExtra[];
+    secondWeek: MidisDayExtra[];
+  };
+
   constructor(groupName: string, data: MidisSchedule) {
     this.groupName = groupName;
-    this.data = data;
+    this.data = data as typeof this.data;
     this.data.firstWeek = this.data.firstWeek.map((day) => this.getDayExtra(day));
     this.data.secondWeek = this.data.secondWeek.map((day) => this.getDayExtra(day));
   }
@@ -165,20 +169,49 @@ export class Schedule {
   getAllDays() {
     return [...this.data.firstWeek, ...this.data.secondWeek];
   }
+
   private getDayExtra(day: MidisDay) {
-    return {
-      ...day,
-      dayName: day.dayName.replace('(Сегодня)', '').replace('(Завтра)', ''),
-      dayPars: day.dayPars.map(
-        (lesson): MidisLesson => ({
-          ...lesson,
-          time: this.getDaySchedule(day, lesson.id),
-        }),
-      ),
-    };
+    return new MidisDayExtra(day);
   }
   private getDaySchedule(day: MidisDay, id: number) {
     return schedule_time[day.dayName.includes('Суббота') ? 'saturday' : 'weekdays'][id - 1];
+  }
+}
+
+export class MidisDayExtra implements MidisDay {
+  dayName!: string;
+  dayTimetable!: string;
+  dayPars!: MidisLesson[];
+  isSaturday!: boolean;
+
+  constructor(day: MidisDay) {
+    Object.assign(this, day);
+    this.dayName = day.dayName.replace('(Сегодня)', '').replace('(Завтра)', '');
+    this.isSaturday = day.dayName.includes('Суббота');
+    this.dayPars = day.dayPars.map(
+      (lesson): MidisLesson => ({
+        ...lesson,
+        time: getScheduleTime(lesson.id, this.isSaturday, true) as MidisLesson['time'],
+      }),
+    );
+  }
+
+  getCurrently() {
+    const time = Date.now();
+
+    const startSchedule = getScheduleTime(this.dayPars[0].id, this.isSaturday);
+    if (time < startSchedule.start) {
+      return 0;
+    }
+
+    for (let i = 0; i < this.dayPars.length; i++) {
+      const schedule = getScheduleTime(this.dayPars[i].id, this.isSaturday);
+      if (schedule.end >= time && schedule.start <= time) {
+        return this.dayPars[i].id;
+      }
+    }
+
+    return -1;
   }
 }
 
@@ -235,6 +268,37 @@ export function getTime(day: MidisDay) {
   return {
     current: 0,
     time: `Перемена`,
+  };
+}
+
+function getScheduleTime(schedule_index: number, isSaturday: boolean, raw = false) {
+  const time = schedule_time[isSaturday ? 'saturday' : 'weekdays'][schedule_index];
+  if (raw) {
+    return time;
+  }
+
+  const getTime = (time: string) => {
+    const [hours, minutes] = time.split(':').map((value) => Number(value));
+    return {
+      hours,
+      minutes,
+    };
+  };
+
+  const start = new Date();
+  start.setHours(getTime(time.start).hours);
+  start.setMinutes(getTime(time.end).minutes);
+  start.setSeconds(0);
+  start.setMilliseconds(0);
+  const end = new Date();
+  end.setHours(getTime(time.end).hours);
+  end.setMinutes(getTime(time.end).minutes);
+  end.setSeconds(0);
+  end.setMilliseconds(0);
+
+  return {
+    start: start.getTime(),
+    end: end.getTime(),
   };
 }
 

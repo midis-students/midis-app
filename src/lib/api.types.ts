@@ -16,6 +16,7 @@ export interface MidisDay {
   dayName: string;
   dayTimetable: string;
   dayPars: MidisLesson[];
+  isSaturday: boolean;
 }
 
 export interface MidisLesson {

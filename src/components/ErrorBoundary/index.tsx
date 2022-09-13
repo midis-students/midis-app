@@ -15,6 +15,7 @@ export class ErrorBoundary extends React.Component<{ children: React.ReactNode }
   componentDidCatch(error: any, errorInfo: any) {}
 
   render() {
+    const version = document.getElementsByTagName('html')[0].getAttribute('version') || 'Dev';
     if (this.state.hasError) {
       return (
         <div
@@ -27,6 +28,7 @@ export class ErrorBoundary extends React.Component<{ children: React.ReactNode }
           }}>
           <strong style={{ marginBottom: '1em' }}>Что-то пошло не так...</strong>
           <img src="https://stikvk.ru/wp-content/uploads/2020/10/256-28-2.png" alt="oh no..." />
+          <span>{version}</span>
         </div>
       );
     }

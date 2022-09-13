@@ -113,6 +113,9 @@ export class Api {
         if (item) {
           return JSON.parse(item);
         }
+      }else{
+        localStorage.removeItem(key+'-t');
+        localStorage.removeItem(key);
       }
     }
     return null;

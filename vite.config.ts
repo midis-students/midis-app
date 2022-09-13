@@ -17,7 +17,7 @@ const versioning = (): PluginOption => {
         const { data } = await axios.get(
           `http://ip2.damirlut.online:9000/github/commits/${owner}/${repo}/`,
         );
-        const version = `Build #${data} ${new Date().toLocaleDateString()}`;
+        const version = `Build #${data} ${new Date().toLocaleTimeString()}`;
         console.log(version);
 
         indexHtml.source = indexHtml.source

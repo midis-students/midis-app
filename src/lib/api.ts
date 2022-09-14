@@ -196,12 +196,18 @@ export class MidisDayExtra implements MidisDay {
     );
   }
 
+  getTimeToStart(schedule_index: number) {
+    const schedule = getScheduleTime(schedule_index, this.isSaturday);
+    const now = Date.now();
+    return getFormatTime((Number(schedule.start) - now) / 1000);
+  }
+
   getCurrently() {
     const time = Date.now();
 
     const startSchedule = getScheduleTime(this.dayPars[0].id, this.isSaturday);
     if (time < startSchedule.start) {
-      return 0;
+      return this.dayPars[0].id;
     }
 
     for (let i = 0; i < this.dayPars.length; i++) {
@@ -211,16 +217,28 @@ export class MidisDayExtra implements MidisDay {
       }
     }
 
-    return -1;
+    return 0;
   }
 }
 
-export function FormatTime(seconds: number) {
+export type FormatTime = {
+  hours: number;
+  mins: number;
+  secs: number;
+};
+
+export function getFormatTime(seconds: number): FormatTime {
   return {
     hours: Math.trunc(seconds / 3600),
     mins: Math.trunc((seconds % 3600) / 60),
     secs: Math.trunc((seconds % 3600) % 60),
   };
+}
+
+export function getFormatTimeString(time: FormatTime) {
+  return `${time.hours.toString().padStart(2, '0')}:${time.mins
+    .toString()
+    .padStart(2, '0')}:${time.secs.toString().padStart(2, '0')}`;
 }
 
 export function getTime(day: MidisDay) {
@@ -287,14 +305,12 @@ function getScheduleTime(schedule_index: number, isSaturday: boolean, raw = fals
 
   const start = new Date();
   start.setHours(getTime(time.start).hours);
-  start.setMinutes(getTime(time.end).minutes);
+  start.setMinutes(getTime(time.start).minutes);
   start.setSeconds(0);
-  start.setMilliseconds(0);
   const end = new Date();
   end.setHours(getTime(time.end).hours);
   end.setMinutes(getTime(time.end).minutes);
   end.setSeconds(0);
-  end.setMilliseconds(0);
 
   return {
     start: start.getTime(),

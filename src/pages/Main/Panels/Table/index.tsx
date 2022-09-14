@@ -3,7 +3,14 @@ import { useRecoilValue } from 'recoil';
 import { ScheduleAtom } from '../../../../atoms/schedule.atom';
 import Div from '../../../../components/Div';
 import View from '../../../../components/View';
-import { Api, FormatTime, getTime, MidisDayExtra } from '../../../../lib/api';
+import {
+  Api,
+  FormatTime,
+  getFormatTime,
+  getFormatTimeString,
+  getTime,
+  MidisDayExtra,
+} from '../../../../lib/api';
 import { MidisDay } from '../../../../lib/api.types';
 
 import style from './style.module.scss';
@@ -16,8 +23,12 @@ export default function TableView() {
 
   React.useEffect(() => {
     const interval = setInterval(() => {
-      const time = FormatTime(Api.getCacheTime('schedule'));
-      setCacheTime(`${time.mins} минут назад`);
+      const time = getFormatTime(Api.getCacheTime('schedule'));
+      if (time.hours) {
+        setCacheTime(`${time.hours} час(ов) назад`);
+      } else {
+        setCacheTime(`${time.mins} минут назад`);
+      }
     }, 1000);
     return () => {
       clearInterval(interval);
@@ -39,17 +50,17 @@ interface DayRenderProps {
 }
 
 function DayRender({ day, tomorrow }: DayRenderProps) {
-  const [{ current, time }, setTime] = React.useState<ReturnType<typeof getTime>>({} as any);
+  const [time, setTime] = React.useState<string>('');
+  const current = day.getCurrently();
   React.useEffect(() => {
     const interval = setInterval(() => {
-      setTime(getTime(day));
+      setTime(getFormatTimeString(day.getTimeToStart(current)));
     }, 1000);
 
     return () => {
       clearInterval(interval);
     };
   }, []);
-  console.log('current', day.getCurrently());
 
   const showAlt = true;
   return (
@@ -72,8 +83,8 @@ function DayRender({ day, tomorrow }: DayRenderProps) {
               </span>
               <span className={style.meta__teacher}>{par.teacher}</span>
             </div>
-            {!tomorrow && i === current && <div className={style.tag}>{time}</div>}
-            {!tomorrow && i - 1 === current && <div className={style.tag}>Далее</div>}
+            {!tomorrow && par.id === current && <div className={style.tag}>{time}</div>}
+            {!tomorrow && par.id - 1 === current && <div className={style.tag}>Далее</div>}
           </li>
         ))}
       </ul>

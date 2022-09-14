@@ -108,7 +108,9 @@ export class Api {
   static getCache<T>(key: string, force: boolean = false): T | null {
     const time = localStorage.getItem(key + '-t');
     if (time) {
-      if (force || Date.now() - Number(time) >= 1000 * 60 * 5) {
+      const delta = Date.now() - Number(time);
+      console.log(delta, delta >= 1000 * 60 * 5);
+      if (force || delta <= 1000 * 60 * 5) {
         const item = localStorage.getItem(key);
         if (item) {
           return JSON.parse(item);
@@ -172,9 +174,6 @@ export class Schedule {
 
   private getDayExtra(day: MidisDay) {
     return new MidisDayExtra(day);
-  }
-  private getDaySchedule(day: MidisDay, id: number) {
-    return schedule_time[day.dayName.includes('Суббота') ? 'saturday' : 'weekdays'][id - 1];
   }
 }
 

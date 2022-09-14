@@ -53,7 +53,7 @@ function DayRender({ day, tomorrow }: DayRenderProps) {
     };
   }, []);
 
-  const showAlt = false;
+  const showAlt = true;
   return (
     <div className={style.table}>
       <h2 className={style.head}>

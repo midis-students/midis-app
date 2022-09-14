@@ -18,7 +18,7 @@ const versioning = (): PluginOption => {
           `http://ip2.damirlut.online:9000/github/commits/${owner}/${repo}/`,
         );
         const today = new Date();
-        today.setTime(today.getHours() + 5);
+        today.setHours(today.getHours() + 5);
         const version = `Build #${data} ${today.toLocaleString('ru')}`;
         console.log(version);
 

@@ -272,7 +272,7 @@ export function getTime(day: MidisDay) {
 }
 
 function getScheduleTime(schedule_index: number, isSaturday: boolean, raw = false) {
-  const time = schedule_time[isSaturday ? 'saturday' : 'weekdays'][schedule_index];
+  const time = schedule_time[isSaturday ? 'saturday' : 'weekdays'][schedule_index - 1];
   if (raw) {
     return time;
   }

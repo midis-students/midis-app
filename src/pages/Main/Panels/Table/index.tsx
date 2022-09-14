@@ -1,17 +1,8 @@
 import React from 'react';
 import { useRecoilValue } from 'recoil';
 import { ScheduleAtom } from '../../../../atoms/schedule.atom';
-import Div from '../../../../components/Div';
 import View from '../../../../components/View';
-import {
-  Api,
-  FormatTime,
-  getFormatTime,
-  getFormatTimeString,
-  getTime,
-  MidisDayExtra,
-} from '../../../../lib/api';
-import { MidisDay } from '../../../../lib/api.types';
+import { Api, getFormatTime, getFormatTimeString, MidisDayExtra } from '../../../../lib/api';
 
 import style from './style.module.scss';
 
@@ -54,7 +45,7 @@ function DayRender({ day, tomorrow }: DayRenderProps) {
   const current = day.getCurrently();
   React.useEffect(() => {
     const interval = setInterval(() => {
-      setTime(getFormatTimeString(day.getTimeToStart(current)));
+      setTime(getFormatTimeString(day.getTime(current)));
     }, 1000);
 
     return () => {

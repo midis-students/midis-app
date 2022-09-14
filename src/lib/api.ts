@@ -196,10 +196,13 @@ export class MidisDayExtra implements MidisDay {
     );
   }
 
-  getTimeToStart(schedule_index: number) {
+  getTime(schedule_index: number) {
     const schedule = getScheduleTime(schedule_index, this.isSaturday);
     const now = Date.now();
-    return getFormatTime((Number(schedule.start) - now) / 1000);
+    if (Number(schedule.start) - now > 0) {
+      return getFormatTime((Number(schedule.start) - now) / 1000);
+    }
+    return getFormatTime((Number(schedule.end) - now) / 1000);
   }
 
   getCurrently() {
@@ -239,54 +242,6 @@ export function getFormatTimeString(time: FormatTime) {
   return `${time.hours.toString().padStart(2, '0')}:${time.mins
     .toString()
     .padStart(2, '0')}:${time.secs.toString().padStart(2, '0')}`;
-}
-
-export function getTime(day: MidisDay) {
-  /// TODO Переделать
-  const now = new Date();
-
-  var current = 0;
-
-  for (var i = 1; i < day.dayPars.length; i++) {
-    const time = day.dayPars[i].time;
-    const start = time.start.split(':').map((value) => Number(value));
-    const startTime = new Date();
-    startTime.setHours(start[0]);
-    startTime.setMinutes(start[1]);
-    startTime.setSeconds(0);
-    const end = time.end.split(':').map((value) => Number(value));
-    const endTime = new Date();
-    endTime.setHours(end[0]);
-    endTime.setMinutes(end[1]);
-    endTime.setSeconds(0);
-
-    current = i - 1;
-
-    if (startTime >= now) {
-      //pre End time
-      var preEnd = day.dayPars[i - 1].time.end.split(':').map((value) => Number(value));
-      const preEndTime = new Date();
-      preEndTime.setHours(preEnd[0]);
-      preEndTime.setMinutes(preEnd[1]);
-      preEndTime.setSeconds(0);
-
-      var outdate = new Date(preEndTime.getTime() - now.getTime());
-
-      var preHours = preEndTime.getHours() - now.getHours() - 1,
-        preMinutes = outdate.getMinutes().toString().padStart(2, '0'),
-        preSeconds = outdate.getSeconds().toString().padStart(2, '0');
-
-      return {
-        current: current,
-        time: `${(preHours ? preHours + ':' : '') + preMinutes}:${preSeconds}`,
-      };
-    }
-  }
-
-  return {
-    current: 0,
-    time: `Перемена`,
-  };
 }
 
 function getScheduleTime(schedule_index: number, isSaturday: boolean, raw = false) {

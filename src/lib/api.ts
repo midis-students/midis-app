@@ -118,7 +118,7 @@ export class Api {
       return cache;
     }
     try {
-      const { data } = await func.bind(this)();
+      const data = await func.bind(this)();
       this.setCache(key, data);
       return data;
     } catch (e) {

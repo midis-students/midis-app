@@ -33,8 +33,6 @@ export default function MarksView() {
     return getTime(next.date) - getTime(prev.date);
   });
 
-  console.log(transformed);
-
   return (
     <View>
       <h1>Оценки</h1>

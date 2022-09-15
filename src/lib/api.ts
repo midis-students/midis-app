@@ -131,7 +131,7 @@ export class Api {
     const time = localStorage.getItem(key + '-t');
     if (time) {
       const delta = Date.now() - Number(time);
-      if (force || delta <= getRecoil(SettingsAtom).cacheTime) {
+      if (force || delta <= 1000 * 60 * getRecoil(SettingsAtom).cacheTime) {
         const item = localStorage.getItem(key);
         if (item) {
           return JSON.parse(item);

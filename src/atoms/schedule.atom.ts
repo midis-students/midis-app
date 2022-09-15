@@ -6,14 +6,8 @@ export const ScheduleAtom = selector({
   key: 'schedule.atom',
   get: async () => {
     const group = 'Группа П-38';
-    const cache = Api.getCache<ApiSchedule>('schedule');
-    if (cache) {
-      const data = Api.transformSchedule(cache);
-      return data[group];
-    }
-    const data = await Api.schedule();
-    Api.setCache('schedule', data);
-    const schedule = Api.transformSchedule(data);
-    return schedule[group];
+    const data = await Api.execute<ApiSchedule>('schedule', Api.schedule);
+    const groups = Api.transformSchedule(data);
+    return groups[group];
   },
 });

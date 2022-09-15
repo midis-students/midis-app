@@ -1,3 +1,4 @@
+import { SettingsAtom } from './../atoms/settings.atom';
 import { ApiInfo, Profile } from './api.types';
 import { ApiError, ApiSchedule, MidisSchedule, MidisDay, MidisLesson, ApiMarks } from './api.types';
 import { TokenAtom } from './../atoms/token.atom';
@@ -27,18 +28,24 @@ export class Api {
   static async test() {
     const token = getRecoil(TokenAtom);
     if (token) {
-      const { data, headers } = await axios.get(this.baseURL + 'test', {
-        headers: {
-          Authorization: token,
-        },
-      });
-      if (headers['x-update']) {
-        setRecoil(TokenAtom, headers['x-update']);
-        localStorage.setItem('token', headers['x-update']);
-        console.log('Updating token...');
-        return true;
+      try {
+        const { data, headers } = await axios.get(this.baseURL + 'test', {
+          headers: {
+            Authorization: token,
+          },
+        });
+        if (headers['x-update']) {
+          setRecoil(TokenAtom, headers['x-update']);
+          localStorage.setItem('token', headers['x-update']);
+          console.log('Updating token...');
+          return true;
+        }
+        if (data.ok) return true;
+      } catch (e) {
+        if (localStorage.getItem('schedule') != null) {
+          return true;
+        }
       }
-      if (data.ok) return true;
     }
     setRecoil(TokenAtom, null);
     localStorage.removeItem('token');
@@ -105,12 +112,26 @@ export class Api {
     return { data, raw: true };
   }
 
+  static async execute<T>(key: string, func: Function): Promise<T> {
+    let cache = this.getCache<T>(key);
+    if (cache) {
+      return cache;
+    }
+    try {
+      const { data } = await func.bind(this)();
+      this.setCache(key, data);
+      return data;
+    } catch (e) {
+      console.error(e);
+    }
+    return this.getCache<T>(key, true) as T;
+  }
+
   static getCache<T>(key: string, force: boolean = false): T | null {
     const time = localStorage.getItem(key + '-t');
     if (time) {
       const delta = Date.now() - Number(time);
-      console.log(delta, delta >= 1000 * 60 * 5);
-      if (force || delta <= 1000 * 60 * 5) {
+      if (force || delta <= getRecoil(SettingsAtom).cacheTime) {
         const item = localStorage.getItem(key);
         if (item) {
           return JSON.parse(item);

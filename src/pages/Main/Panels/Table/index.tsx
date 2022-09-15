@@ -1,6 +1,7 @@
 import React from 'react';
 import { useRecoilValue } from 'recoil';
 import { ScheduleAtom } from '../../../../atoms/schedule.atom';
+import { SettingsAtom } from '../../../../atoms/settings.atom';
 import View from '../../../../components/View';
 import { Api, getFormatTime, getFormatTimeString, MidisDayExtra } from '../../../../lib/api';
 
@@ -53,7 +54,7 @@ function DayRender({ day, tomorrow }: DayRenderProps) {
     };
   }, []);
 
-  const showAlt = true;
+  const showAlt = useRecoilValue(SettingsAtom).showAlt;
   return (
     <div className={style.table}>
       <h2 className={style.head}>

@@ -119,6 +119,9 @@ export class Api {
     }
     try {
       const data = await func.bind(this)();
+      if('error' in data){
+        throw new Error("Ошибка в API");
+      }
       this.setCache(key, data);
       return data;
     } catch (e) {

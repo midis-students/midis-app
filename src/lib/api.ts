@@ -119,6 +119,9 @@ export class Api {
     }
     try {
       const data = await func.bind(this)();
+      if('error' in data){
+        throw new Error("Ошибка в API");
+      }
       this.setCache(key, data);
       return data;
     } catch (e) {
@@ -131,7 +134,7 @@ export class Api {
     const time = localStorage.getItem(key + '-t');
     if (time) {
       const delta = Date.now() - Number(time);
-      if (force || delta <= getRecoil(SettingsAtom).cacheTime) {
+      if (force || delta <= 1000 * 60 * getRecoil(SettingsAtom).cacheTime) {
         const item = localStorage.getItem(key);
         if (item) {
           return JSON.parse(item);

@@ -21,11 +21,11 @@ export default function MainPage() {
   };
 
   const tabs = [
-    {
+    /*
       icon: IconNotes,
       label: 'Заметки',
       view: ObsidianView,
-    },
+    },*/
     {
       icon: IconMark,
       label: 'Оценки',

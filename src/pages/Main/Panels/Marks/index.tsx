@@ -38,7 +38,7 @@ export default function MarksView() {
       <h1>Оценки</h1>
       <ul className={style['marks-list']}>
         {transformed.map((value) => (
-          <MarkView key={`${value.object}`} mark={value} />
+          <MarkView key={`${value.object}-${value.date}`} mark={value} />
         ))}
       </ul>
     </View>

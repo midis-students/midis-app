@@ -246,7 +246,7 @@ export class MidisDayExtra implements MidisDay {
       }
     }
 
-    return id;
+    return -1;
   }
 }
 

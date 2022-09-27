@@ -44,14 +44,17 @@ interface DayRenderProps {
 function DayRender({ day, tomorrow }: DayRenderProps) {
   const [time, setTime] = React.useState<string>('');
   const current = day.getCurrently();
-  React.useEffect(() => {
-    const interval = setInterval(() => {
-      setTime(getFormatTimeString(day.getTime(current)));
-    }, 1000);
 
-    return () => {
-      clearInterval(interval);
-    };
+  React.useEffect(() => {
+    if (current >= 0) {
+      const interval = setInterval(() => {
+        setTime(getFormatTimeString(day.getTime(current)));
+      }, 1000);
+
+      return () => {
+        clearInterval(interval);
+      };
+    }
   }, []);
 
   const showAlt = useRecoilValue(SettingsAtom).showAlt;

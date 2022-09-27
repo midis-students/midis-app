@@ -6,7 +6,7 @@ import { getRecoil, setRecoil } from 'recoil-nexus';
 import axios from 'axios';
 
 export class Api {
-  static readonly baseURL = 'https://api.iky.su/v14/';
+  static readonly baseURL = 'https://api.iky.su/';
   private static token = localStorage.getItem('token') || '';
 
   static async login(login: string, password: string) {

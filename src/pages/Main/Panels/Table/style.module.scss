@@ -45,6 +45,11 @@
         width: 2.5em;
         text-align: center;
         word-break: break-all;
+
+        > img {
+          height: 1.5em;
+          filter: invert(1);
+        }
       }
 
       .schedule-time {

@@ -3,6 +3,7 @@ import { useRecoilValue } from 'recoil';
 import { ScheduleAtom } from '../../../../atoms/schedule.atom';
 import { SettingsAtom } from '../../../../atoms/settings.atom';
 import View from '../../../../components/View';
+import DistantIcon from './../../../../assets/distant.svg';
 import { Api, getFormatTime, getFormatTimeString, MidisDayExtra } from '../../../../lib/api';
 
 import style from './style.module.scss';
@@ -67,7 +68,9 @@ function DayRender({ day, tomorrow }: DayRenderProps) {
       <ul className={style.list}>
         {day.dayPars.map((par, i) => (
           <li key={par.id} className={style[`row-${i + 1}`]}>
-            <span className={style['schedule-class']}>{par.class}</span>
+            <span className={style['schedule-class']}>
+              {par.class == 'дистант' ? <img src={DistantIcon} /> : par.class}
+            </span>
             <span className={style['schedule-time']}>
               <div>{par.time.start}</div>
               <div>{par.time.end}</div>

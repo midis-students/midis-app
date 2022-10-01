@@ -1,3 +1,4 @@
+import React from 'react';
 import { useRecoilValue } from 'recoil';
 import { InfoAtom } from '../../../../atoms/info.atom';
 import { ProfileAtom } from '../../../../atoms/profile.atom';
@@ -10,6 +11,26 @@ import style from './style.module.scss';
 export default function ProfileView() {
   const profile = useRecoilValue(ProfileAtom);
   const { version: serverVersion, developers } = useRecoilValue(InfoAtom);
+
+  const [notificationStatus, setNotificationStatus] = React.useState(false);
+
+  React.useEffect(() => {
+    setNotificationStatus(Notification.permission === 'granted');
+  }, []);
+
+  React.useEffect(() => {
+    localStorage.setItem('notification', notificationStatus ? '1' : '0');
+  }, [notificationStatus]);
+
+  const requestPermission = () => {
+    if (notificationStatus) {
+      setNotificationStatus(false);
+    } else {
+      Notification.requestPermission().then((status) => {
+        setNotificationStatus(status === 'granted');
+      });
+    }
+  };
 
   const version = document.getElementsByTagName('html')[0].getAttribute('version') || 'Dev';
   return (
@@ -28,6 +49,13 @@ export default function ProfileView() {
             Выйти
           </Button>
         </div>
+      </Div>
+      <Div className={style.settings}>
+        <h3>Настройки</h3>
+        <label>
+          <input type="checkbox" checked={notificationStatus} onClick={requestPermission} />
+          Уведомление об оценках
+        </label>
       </Div>
       <Div className={style.developers}>
         <h3>Разработчики</h3>

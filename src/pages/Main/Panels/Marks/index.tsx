@@ -23,13 +23,14 @@ export default function MarksView() {
 
   transformed.sort((prev, next) => {
     const getTime = (value: string) => {
-      const [date, month, yaer] = value.split(' ')[1].split('.').map(Number);
+      const [date, month, year] = value.split(' ')[1].split('.').map(Number);
       const _date = new Date();
       _date.setDate(date);
       _date.setMonth(month);
-      _date.setFullYear(yaer);
+      _date.setFullYear(year);
       return _date.getTime();
     };
+
     return getTime(next.date) - getTime(prev.date);
   });
 
@@ -38,7 +39,7 @@ export default function MarksView() {
       <h1>Оценки</h1>
       <ul className={style['marks-list']}>
         {transformed.map((value) => (
-          <MarkView key={`${value.object}-${value.date}`} mark={value} />
+          <MarkView key={`${JSON.stringify(value)}`} mark={value} />
         ))}
       </ul>
     </View>

@@ -6,7 +6,7 @@ import { getRecoil, setRecoil } from 'recoil-nexus';
 import axios from 'axios';
 
 export class Api {
-  static readonly baseURL = 'https://api.iky.su/';
+  static readonly baseURL = 'https://midis-api.damirlut.online/';
   private static token = localStorage.getItem('token') || '';
 
   static async login(login: string, password: string) {

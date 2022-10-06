@@ -225,7 +225,7 @@ export class MidisDayExtra implements MidisDay {
     if (Number(schedule.start) - now > 0) {
       return getFormatTime((Number(schedule.start) - now) / 1000);
     }
-    if (Number(schedule.start) - now > 0) {
+    if (Number(schedule.end) - now > 0) {
       return getFormatTime((Number(schedule.end) - now) / 1000);
     }
 
@@ -236,8 +236,7 @@ export class MidisDayExtra implements MidisDay {
 
   getCurrently() {
     const time = Date.now();
-
-    let id = this.dayPars[0].id;
+    let id = this.dayPars[0]?.id || -1;
 
     for (let i = 0; i < this.dayPars.length; i++) {
       const schedule = getScheduleTime(this.dayPars[i].id, this.isSaturday);

@@ -12,6 +12,7 @@ export default function TablePage() {
 
   useEffect(() => {
     fetchSchedule();
+    document.title = "Расписание";
   }, []);
 
   if (!data) {

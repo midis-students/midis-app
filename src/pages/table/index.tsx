@@ -5,6 +5,7 @@ import Day from "@/pages/table/Day";
 import style from "./style.module.scss";
 import { useSchedule } from "@/store/Schedule";
 import { useEffect } from "react";
+import Loading from "@/components/Loading";
 
 export default function TablePage() {
   const data = useSchedule((select) => select.data);
@@ -16,7 +17,7 @@ export default function TablePage() {
   }, []);
 
   if (!data) {
-    return <Text>Loading...</Text>;
+    return <Loading />;
   }
 
   const days = [...data.first, ...data.second];

@@ -14,7 +14,7 @@ type ScheduleState = {
 export const useSchedule = create<ScheduleState>((set) => ({
   data: undefined,
   fetch: async () => {
-    const data = await fetch("https://midis-api.damirlut.online").then((res) =>
+    const data = await fetch("https://midis-api.damirlut.online/schedule").then((res) =>
       res.json()
     );
     set({ data });

@@ -1,22 +1,18 @@
 import { create } from "zustand";
-import { IWeekTable } from "@/lib/type";
+import { IScheduleResponse } from "@/lib/type";
 
 type ScheduleState = {
-  data:
-    | {
-        first: IWeekTable;
-        second: IWeekTable;
-      }
-    | undefined;
-  fetch: () => Promise<void>;
+  data: Record<string, IScheduleResponse>;
+
+  fetch: (group: string) => Promise<void>;
 };
 
-export const useSchedule = create<ScheduleState>((set) => ({
-  data: undefined,
-  fetch: async () => {
-    const data = await fetch("https://midis-api.damirlut.online/schedule").then((res) =>
-      res.json()
-    );
-    set({ data });
+export const useSchedule = create<ScheduleState>((set, get) => ({
+  data: {},
+  fetch: async (group) => {
+    const data = await fetch(
+      "https://midis-api.damirlut.online/schedule?group=" + group
+    ).then((res) => res.json());
+    set({ data: { ...get().data, [group]: data } });
   },
 }));

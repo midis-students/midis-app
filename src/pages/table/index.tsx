@@ -1,18 +1,20 @@
+import { useEffect } from "react";
 import Div from "@/components/Div";
 import Text from "@/components/Text";
 import Tab from "@/components/Tab";
 import Day from "@/pages/table/Day";
 import style from "./style.module.scss";
 import { useSchedule } from "@/store/Schedule";
-import { useEffect } from "react";
 import Loading from "@/components/Loading";
 
 export default function TablePage() {
-  const data = useSchedule((select) => select.data);
+  const url = new URLSearchParams(location.search);
+  const group = url.get("group") || "";
+  const data = useSchedule((select) => select.data[group]);
   const fetchSchedule = useSchedule((select) => select.fetch);
 
   useEffect(() => {
-    fetchSchedule();
+    fetchSchedule(group);
     document.title = "Расписание";
   }, []);
 

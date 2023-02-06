@@ -14,3 +14,8 @@ export interface IDay {
 }
 
 export type IWeekTable = IDay[];
+
+export type IScheduleResponse = {
+  first: IWeekTable;
+  second: IWeekTable;
+};

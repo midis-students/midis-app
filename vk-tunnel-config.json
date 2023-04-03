@@ -1,0 +1,4 @@
+{
+  "app_id": "APP_ID",
+  "endpoints": ["mobile", "mvk", "web"]
+}

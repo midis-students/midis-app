@@ -1,0 +1,23 @@
+
+.lesson::before {
+    position: absolute;
+    content: " ";
+    width: 5px;
+    height: 5px;
+    left: 0;
+    border-radius: 999px;
+    top: 50%;
+}
+
+.lesson__current::before {
+    background: var(--vkui--color_background_positive);
+}
+
+
+.lesson__danger::before {
+    background: var(--vkui--color_background_negative);
+}
+
+.lesson__next::before {
+    background: var(--vkui--color_background_accent);
+}

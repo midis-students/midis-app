@@ -1,0 +1,5 @@
+.vkcom-epic > .vkuiGroup__inner {
+    display: flex;
+    flex-direction: column;
+    gap: .25em;
+}

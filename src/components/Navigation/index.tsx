@@ -61,6 +61,7 @@ export default function Navigation(props: NavigationProps) {
       <TabbarItem
         selected={activeView === item.page.viewId}
         text={item.label}
+        aria-label={item.label}
         onClick={onClick}
       >
         {item.icon}

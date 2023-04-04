@@ -7,9 +7,9 @@ import {
   PanelHeader,
   RichCell,
   Separator,
-  View,
   Text,
   Title,
+  View,
 } from '@vkontakte/vkui';
 import { useLocation } from '@happysanta/router';
 import { Panels } from '@/router';
@@ -17,6 +17,13 @@ import { ScheduleList } from '@/views/Schedule/local-schedule';
 import { Lesson, LessonDay } from '@/lib/api';
 import cn from 'classnames';
 import './lesson.css';
+import { memo } from 'react';
+import {
+  getCurrentLessons,
+  getLessonState,
+  getScheduleTime,
+  LessonState,
+} from '@/views/Schedule/time';
 
 type ExampleProps = {
   id: string;
@@ -50,6 +57,35 @@ export default function ScheduleView(props: ExampleProps) {
 }
 
 function ViewDay({ day }: { day: LessonDay }) {
+  const isToday = day.date.toLowerCase().includes('(сегодня)');
+  const { currentLesson, nextLesson } = getCurrentLessons(
+    day.lessons,
+    day.date
+  );
+
+  const ViewLesson = memo(({ lesson }: { lesson: Lesson }) => {
+    const isActive = isToday && currentLesson === lesson.id;
+    const isNext = isToday && nextLesson === lesson.id;
+    const isDanger = lesson.danger;
+    const time = getScheduleTime(lesson.id, day.date);
+    const className = cn('lesson', {
+      lesson__current: isActive,
+      lesson__next: isNext,
+      lesson__danger: isDanger,
+    });
+
+    return (
+      <RichCell
+        caption={lesson.teacher}
+        after={lesson.cabinet}
+        subhead={time.start + '-' + time.end}
+        className={className}
+      >
+        <Text>{lesson.object}</Text>
+      </RichCell>
+    );
+  });
+
   return (
     <Card>
       <Header>{day.date}</Header>
@@ -60,25 +96,5 @@ function ViewDay({ day }: { day: LessonDay }) {
         ))}
       </Div>
     </Card>
-  );
-}
-
-function ViewLesson({ lesson }: { lesson: Lesson }) {
-  const isActive = lesson.id === 1;
-  const isNext = lesson.id === 2;
-  const isDanger = lesson.danger;
-
-  return (
-    <RichCell
-      text={lesson.teacher}
-      after={lesson.cabinet}
-      className={cn('lesson', {
-        lesson__current: isActive,
-        lesson__next: isNext,
-        lesson__danger: isDanger,
-      })}
-    >
-      <Text>{lesson.object}</Text>
-    </RichCell>
   );
 }

@@ -2,7 +2,7 @@ import { LessonDay } from '@/lib/api';
 
 export const ScheduleList: LessonDay[] = [
   {
-    date: 'Вторник',
+    date: 'Вторник (Сегодня)',
     lessons: [
       {
         id: 4,

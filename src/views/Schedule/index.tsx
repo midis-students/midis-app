@@ -18,12 +18,7 @@ import { Lesson, LessonDay } from '@/lib/api';
 import cn from 'classnames';
 import './lesson.css';
 import { memo } from 'react';
-import {
-  getCurrentLessons,
-  getLessonState,
-  getScheduleTime,
-  LessonState,
-} from '@/views/Schedule/time';
+import { getCurrentLessons, getScheduleTime } from '@/views/Schedule/time';
 
 type ExampleProps = {
   id: string;

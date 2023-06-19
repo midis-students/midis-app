@@ -1,5 +1,5 @@
-import { PluginOption } from 'vite';
 import { exec } from 'child_process';
+import { PluginOption } from 'vite';
 
 function execAsync(command: string) {
   return new Promise<string>((res) => {

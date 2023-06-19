@@ -10,7 +10,7 @@ interface ImportMeta {
 
 declare module 'eruda' {
   function init(): void;
-  function add(args: any): void;
+  function add(args: unknown): void;
 }
 declare module 'eruda-code';
 declare module 'eruda-dom';

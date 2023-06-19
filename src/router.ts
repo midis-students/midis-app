@@ -1,35 +1,23 @@
-import { Page, Router } from '@happysanta/router';
+import {
+  createHashRouter,
+  createPanel,
+  createRoot,
+  createView,
+  RoutesConfig,
+} from '@vkontakte/vk-mini-apps-router';
 
-export enum Modal {
-  Example = 'example',
-}
+export const ROOT_DEFAULT = 'root';
 
-export enum Views {
-  Schedule = 'schedule',
-  Students = 'students',
-  Profile = 'Profile',
-}
+export const VIEW_SCHEDULE = 'schedule';
 
-export enum Panels {
-  Schedule = 'schedule',
-  Students = 'students',
-  Profile = 'profile',
-}
+export const VIEW_SCHEDULE_PANELS = {
+  Default: 'default',
+} as const;
 
-export enum Pages {
-  Schedule = '/',
-  Students = '/students',
-  Profile = '/profile/:id?',
-}
+export const routes = RoutesConfig.create([
+  createRoot(ROOT_DEFAULT, [
+    createView(VIEW_SCHEDULE, [createPanel(VIEW_SCHEDULE_PANELS.Default, `/`)]),
+  ]),
+]);
 
-const routes = {
-  [Pages.Schedule]: new Page(Panels.Schedule, Views.Schedule),
-  [Pages.Students]: new Page(Panels.Students, Views.Students),
-  [Pages.Profile]: new Page(Panels.Profile, Views.Profile),
-};
-
-export const resolvePage = (page: Pages) => routes[page];
-
-export const router = new Router(routes);
-
-router.start();
+export const router = createHashRouter(routes.getRoutes());

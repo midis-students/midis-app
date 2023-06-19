@@ -1,0 +1,8 @@
+.badge {
+    width: fit-content;
+    padding: 2px 8px;
+    border: 1px solid var(--vkui--color_background_accent);
+    border-radius: 15px;
+    font-size: 12px;
+    font-weight: bold;
+}

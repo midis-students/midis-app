@@ -1,49 +1,40 @@
-import { lazy } from 'react';
-import { Pages, resolvePage } from '@/router';
-import Navigation from '@/components/Navigation';
-import { PanelHeader, PanelSpinner } from '@vkontakte/vkui';
+import React from 'react';
 import {
-  Icon28TablecellsOutline,
-  Icon28UserOutline,
-  Icon28Users3Outline,
-} from '@vkontakte/icons';
+  useActiveVkuiLocation,
+  usePopout,
+  useRouteNavigator,
+} from '@vkontakte/vk-mini-apps-router';
+import { Epic, ModalRoot, Root, SplitCol, SplitLayout } from '@vkontakte/vkui';
 
-function App() {
-  const navbar = [
-    {
-      id: Pages.Profile,
-      label: 'Профиль',
-      icon: <Icon28UserOutline />,
-      page: resolvePage(Pages.Profile),
-      element: lazy(() => import('./views/Profile')),
-    },
-    {
-      id: Pages.Schedule,
-      label: 'Расписание',
-      icon: <Icon28TablecellsOutline />,
-      page: resolvePage(Pages.Schedule),
-      element: lazy(() => import('./views/Schedule')),
-    },
-    {
-      id: Pages.Students,
-      label: 'Студенты',
-      icon: <Icon28Users3Outline />,
-      page: resolvePage(Pages.Students),
-      element: lazy(() => import('./views/Students')),
-    },
-  ];
+import { ROOT_DEFAULT, VIEW_SCHEDULE } from '@/router';
+import { ScheduleView } from '@/views/Schedule';
+
+export const App = () => {
+  const routerPopout = usePopout();
+  const routeNavigator = useRouteNavigator();
+
+  const {
+    root: activeRoot = ROOT_DEFAULT,
+    view: activeView = VIEW_SCHEDULE,
+    modal: activeModal,
+  } = useActiveVkuiLocation();
+
+  const modal = (
+    <ModalRoot
+      activeModal={activeModal}
+      onClose={() => routeNavigator.hideModal()}
+    ></ModalRoot>
+  );
 
   return (
-    <Navigation
-      items={navbar}
-      header={<PanelHeader>МИДиС Мини</PanelHeader>}
-      fallback={<PanelSpinner style={{ height: '100%' }} />}
-    >
-      {navbar.map((nav) => (
-        <nav.element key={nav.id} id={nav.page.viewId} />
-      ))}
-    </Navigation>
+    <SplitLayout popout={routerPopout} modal={modal}>
+      <SplitCol>
+        <Epic activeStory={activeRoot}>
+          <Root activeView={activeView} nav={ROOT_DEFAULT}>
+            <ScheduleView nav={VIEW_SCHEDULE} />
+          </Root>
+        </Epic>
+      </SplitCol>
+    </SplitLayout>
   );
-}
-
-export default App;
+};

@@ -1,4 +1,4 @@
-import { LessonDay } from '@/lib/api';
+import { LessonDay } from '@/lib/types';
 
 export const ScheduleList: LessonDay[] = [
   {
@@ -9,14 +9,14 @@ export const ScheduleList: LessonDay[] = [
         object: 'Учебная практика',
         cabinet: '249/251',
         flow: 'Все',
-        teacher: 'Горанов',
+        teacher: 'Горанов П.С.',
       },
       {
         id: 5,
         object: 'Учебная практика',
         cabinet: '1',
         flow: 'Все',
-        teacher: 'Горанов',
+        teacher: 'Горанов П.С.',
       },
     ],
   },

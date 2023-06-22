@@ -1,7 +1,7 @@
 import { FC } from 'react';
 
 import { ViewRoute } from '@/components/ViewRoute';
-import { VIEW_SCHEDULE_PANELS } from '@/router';
+import { routes } from '@/router';
 
 import { PanelScheduleShort } from './ScheduleShort';
 
@@ -11,8 +11,8 @@ type ViewProps = {
 
 export const ScheduleView: FC<ViewProps> = (props) => {
   return (
-    <ViewRoute nav={props.nav} defaultPanel={VIEW_SCHEDULE_PANELS.Default}>
-      <PanelScheduleShort nav={VIEW_SCHEDULE_PANELS.Default} />
+    <ViewRoute nav={props.nav} defaultPanel={routes.root.schedule.default.id}>
+      <PanelScheduleShort nav={routes.root.schedule.default.id} />
     </ViewRoute>
   );
 };

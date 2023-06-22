@@ -1,5 +1,6 @@
 export const VERSION =
-  document.getElementsByTagName('html')[0].getAttribute('version') || 'Dev';
+  document.getElementsByTagName('html')[0].getAttribute('version') ||
+  'DEVELOPER VERSION';
 
 export const IS_DEV = import.meta.env.DEV;
 export const IS_LOCALHOST = location.origin.includes('localhost');

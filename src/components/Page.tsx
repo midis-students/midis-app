@@ -18,6 +18,7 @@ export function Page(props: PageProps) {
 
   const defaultOnClose = () =>
     isFirstPage ? routeNavigator.push('/') : routeNavigator.back();
+
   const onClose = props.onClose ?? defaultOnClose;
 
   const title = props.title ?? 'МИДиС Мини';

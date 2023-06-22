@@ -6,17 +6,11 @@ import {
   RoutesConfig,
 } from '@vkontakte/vk-mini-apps-router';
 
-export const ROOT_DEFAULT = 'root';
-
-export const VIEW_SCHEDULE = 'schedule';
-
-export const VIEW_SCHEDULE_PANELS = {
-  Default: 'default',
-} as const;
-
 export const routes = RoutesConfig.create([
-  createRoot(ROOT_DEFAULT, [
-    createView(VIEW_SCHEDULE, [createPanel(VIEW_SCHEDULE_PANELS.Default, `/`)]),
+  createRoot('root', [
+    createView('schedule', [createPanel('default', `/`)]),
+    createView('journal', [createPanel('default', '/journal')]),
+    createView('profile', [createPanel('default', '/profile')]),
   ]),
 ]);
 

@@ -1,12 +1,23 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import {
   useActiveVkuiLocation,
   usePopout,
   useRouteNavigator,
 } from '@vkontakte/vk-mini-apps-router';
-import { Epic, ModalRoot, Root, SplitCol, SplitLayout } from '@vkontakte/vkui';
+import {
+  Epic,
+  ModalRoot,
+  Root,
+  ScreenSpinner,
+  SplitCol,
+  SplitLayout,
+} from '@vkontakte/vkui';
 
-import { ROOT_DEFAULT, VIEW_SCHEDULE } from '@/router';
+import { ErrorBoundary } from '@/components/ErrorBoundary';
+import Navbar from '@/Nabbar';
+import { routes } from '@/router';
+import { JournalView } from '@/views/Journal';
+import { ProfileView } from '@/views/Profile';
 import { ScheduleView } from '@/views/Schedule';
 
 export const App = () => {
@@ -14,8 +25,8 @@ export const App = () => {
   const routeNavigator = useRouteNavigator();
 
   const {
-    root: activeRoot = ROOT_DEFAULT,
-    view: activeView = VIEW_SCHEDULE,
+    root: activeRoot = routes.root.id,
+    view: activeView = routes.root.schedule.id,
     modal: activeModal,
   } = useActiveVkuiLocation();
 
@@ -26,12 +37,34 @@ export const App = () => {
     ></ModalRoot>
   );
 
+  const views = [
+    {
+      id: 'schedule',
+      element: ScheduleView,
+    },
+    {
+      id: 'journal',
+      element: JournalView,
+    },
+
+    {
+      id: 'profile',
+      element: ProfileView,
+    },
+  ];
+
   return (
     <SplitLayout popout={routerPopout} modal={modal}>
-      <SplitCol>
-        <Epic activeStory={activeRoot}>
-          <Root activeView={activeView} nav={ROOT_DEFAULT}>
-            <ScheduleView nav={VIEW_SCHEDULE} />
+      <SplitCol width={'100%'} stretchedOnMobile autoSpaced>
+        <Epic activeStory={activeRoot} tabbar={<Navbar />}>
+          <Root activeView={activeView} nav={routes.root.id}>
+            {views.map((view) => (
+              <ErrorBoundary key={view.id} id={view.id}>
+                <Suspense fallback={<ScreenSpinner />}>
+                  <view.element nav={view.id} />
+                </Suspense>
+              </ErrorBoundary>
+            ))}
           </Root>
         </Epic>
       </SplitCol>

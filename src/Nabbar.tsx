@@ -1,6 +1,6 @@
 import {
   Icon28BookOutline,
-  Icon28TablecellsOutline,
+  Icon28GridSquareOutline,
   Icon28UserOutline,
 } from '@vkontakte/icons';
 import {
@@ -20,7 +20,7 @@ const tabbars = [
   {
     view: routes.root.schedule,
     text: 'Расписание',
-    icon: <Icon28TablecellsOutline />,
+    icon: <Icon28GridSquareOutline />,
   },
   {
     view: routes.root.profile,
